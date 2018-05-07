@@ -1106,20 +1106,19 @@ void Game::EventLoop() {
                     viewparams->bRedrawGameUI = true;
                     continue;
                 case UIMSG_CastSpell_Telekinesis:
-                    HEXRAYS_LOWORD(v42) = vis->get_picked_object_zbuf_val();
-                    v44 = (unsigned __int16)v42;
+                    v42 = vis->get_picked_object_zbuf_val();
+                    v44 = v42;
                     v45 = PID_TYPE(v44);
                     uNumSeconds = v44;
                     v46 = PID_ID(v44);
-                    if (v45 == 3) {
+                    if (v45 == OBJECT_Actor) {
                         v47 = pActors[v46].uAIState == Dead;
                         if (!v47) continue;
                         pSpellInfo = (CastSpellInfo *)pGUIWindow_CastTargetedSpell->ptr_1C;
                         pSpellInfo->uFlags &= ~0x40u;
                         pSpellInfo->uPlayerID_2 = uMessageParam;
                         pSpellInfo->spell_target_pid = v44;
-                        pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(
-                            300);
+                        pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(300);
                         pGUIWindow_CastTargetedSpell->Release();
                         pGUIWindow_CastTargetedSpell = 0;
                         mouse->SetCursorImage("MICON1");
@@ -1128,19 +1127,13 @@ void Game::EventLoop() {
                         back_to_game();
                         continue;
                     }
-                    if (v45 == 2) {
-                        v47 = (pObjectList
-                                   ->pObjects[pSpriteObjects[v46].uObjectDescID]
-                                   .uFlags &
-                               0x10) == 0;
-                        if (!v47) continue;
-                        pSpellInfo = (CastSpellInfo *)
-                                         pGUIWindow_CastTargetedSpell->ptr_1C;
+                    if (v45 == OBJECT_Item) {
+                        if (pSpriteObjects[v46].IsUnpickable()) continue;
+                        pSpellInfo = (CastSpellInfo*)pGUIWindow_CastTargetedSpell->ptr_1C;
                         pSpellInfo->uFlags &= ~0x40u;
                         pSpellInfo->uPlayerID_2 = uMessageParam;
                         pSpellInfo->spell_target_pid = v44;
-                        pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(
-                            300);
+                        pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(300);
                         pGUIWindow_CastTargetedSpell->Release();
                         pGUIWindow_CastTargetedSpell = 0;
                         mouse->SetCursorImage("MICON1");
@@ -1149,10 +1142,10 @@ void Game::EventLoop() {
                         back_to_game();
                         continue;
                     }
-                    if (v45 == 5) {
+                    if (v45 == OBJECT_Decoration) {
                         v48 = pLevelDecorations[v46].uEventID == 0;
                     } else {
-                        if (v45 != 6) continue;
+                        if (v45 != OBJECT_BModel) continue;
                         if (uCurrentlyLoadedLevelType != 1) {
                             pODMFace = &pOutdoor->pBModels[v44 >> 9].pFaces[v46 & 0x3F];
                             if (!pODMFace->Clickable() ||
@@ -1185,8 +1178,7 @@ void Game::EventLoop() {
                     pSpellInfo->uFlags &= ~0x40u;
                     pSpellInfo->uPlayerID_2 = uMessageParam;
                     pSpellInfo->spell_target_pid = v44;
-                    pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(
-                        300);
+                    pParty->pPlayers[pSpellInfo->uPlayerID].SetRecoveryTime(300);
                     pGUIWindow_CastTargetedSpell->Release();
                     pGUIWindow_CastTargetedSpell = 0;
                     mouse->SetCursorImage("MICON1");

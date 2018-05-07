@@ -4786,50 +4786,25 @@ int collide_against_floor(int x, int y, int z, unsigned int *pSectorID,
 }
 
 void _46ED8A_collide_against_sprite_objects(unsigned int _this) {
-    ObjectDesc *object;  // edx@4
-    int v10;             // ecx@12
-    int v11;             // esi@13
-
-    for (uint i = 0; i < uNumSpriteObjects; ++i) {
+    for (unsigned int i = 0; i < uNumSpriteObjects; ++i) {
         if (pSpriteObjects[i].uObjectDescID) {
-            object = &pObjectList->pObjects[pSpriteObjects[i].uObjectDescID];
+            ObjectDesc *object = &pObjectList->vObjects[pSpriteObjects[i].uObjectDescID];
             if (!(object->uFlags & OBJECT_DESC_NO_COLLISION)) {
-                if (stru_721530.sMaxX <=
-                        pSpriteObjects[i].vPosition.x + object->uRadius &&
-                    stru_721530.sMinX >=
-                        pSpriteObjects[i].vPosition.x - object->uRadius &&
-                    stru_721530.sMaxY <=
-                        pSpriteObjects[i].vPosition.y + object->uRadius &&
-                    stru_721530.sMinY >=
-                        pSpriteObjects[i].vPosition.y - object->uRadius &&
-                    stru_721530.sMaxZ <=
-                        pSpriteObjects[i].vPosition.z + object->uHeight &&
+                if (stru_721530.sMaxX <= pSpriteObjects[i].vPosition.x + object->uRadius &&
+                    stru_721530.sMinX >= pSpriteObjects[i].vPosition.x - object->uRadius &&
+                    stru_721530.sMaxY <= pSpriteObjects[i].vPosition.y + object->uRadius &&
+                    stru_721530.sMinY >= pSpriteObjects[i].vPosition.y - object->uRadius &&
+                    stru_721530.sMaxZ <= pSpriteObjects[i].vPosition.z + object->uHeight &&
                     stru_721530.sMinZ >= pSpriteObjects[i].vPosition.z) {
-                    if (abs(((pSpriteObjects[i].vPosition.x -
-                              stru_721530.normal.x) *
-                                 stru_721530.direction.y -
-                             (pSpriteObjects[i].vPosition.y -
-                              stru_721530.normal.y) *
-                                 stru_721530.direction.x) >>
-                            16) <=
+                    if (abs(((pSpriteObjects[i].vPosition.x - stru_721530.normal.x) *
+                                 stru_721530.direction.y - fixpoint_mul((pSpriteObjects[i].vPosition.y - stru_721530.normal.y), stru_721530.direction.x))) <=
                         object->uHeight + stru_721530.prolly_normal_d) {
-                        v10 = ((pSpriteObjects[i].vPosition.x -
-                                stru_721530.normal.x) *
-                                   stru_721530.direction.x +
-                               (pSpriteObjects[i].vPosition.y -
-                                stru_721530.normal.y) *
-                                   stru_721530.direction.y) >>
-                              16;
+                        int v10 = ((pSpriteObjects[i].vPosition.x - stru_721530.normal.x) * stru_721530.direction.x
+                                   + fixpoint_mul((pSpriteObjects[i].vPosition.y - stru_721530.normal.y), stru_721530.direction.y));
                         if (v10 > 0) {
-                            v11 = stru_721530.normal.z +
-                                  ((unsigned __int64)(stru_721530.direction.z *
-                                                      (signed __int64)v10) >>
-                                   16);
-                            if (v11 >= pSpriteObjects[i].vPosition.z -
-                                           stru_721530.prolly_normal_d) {
-                                if (v11 <= object->uHeight +
-                                               stru_721530.prolly_normal_d +
-                                               pSpriteObjects[i].vPosition.z) {
+                            int v11 = stru_721530.normal.z + fixpoint_mul(stru_721530.direction.z, v10);
+                            if (v11 >= pSpriteObjects[i].vPosition.z - stru_721530.prolly_normal_d) {
+                                if (v11 <= object->uHeight + stru_721530.prolly_normal_d + pSpriteObjects[i].vPosition.z) {
                                     if (v10 < stru_721530.field_7C) {
                                         sub_46DEF2(_this, i);
                                     }
@@ -5002,39 +4977,33 @@ int _46F04E_collide_against_portals() {
 
 unsigned int sub_46DEF2(signed int a2, unsigned int uLayingItemID) {
     unsigned int result = uLayingItemID;
-    if (pObjectList->pObjects[pSpriteObjects[uLayingItemID].uObjectDescID].uFlags & 0x10) {
+    if (pSpriteObjects[uLayingItemID].IsUnpickable()) {
         result = _46BFFA_update_spell_fx(uLayingItemID, a2);
     }
     return result;
 }
 
 void UpdateObjects() {
-    int v5;   // ecx@6
-    int v7;   // eax@9
     int v11;  // eax@17
-    int v12;  // edi@27
-    int v18;  // [sp+4h] [bp-10h]@27
-    int v19;  // [sp+8h] [bp-Ch]@27
 
     for (uint i = 0; i < uNumSpriteObjects; ++i) {
         if (pSpriteObjects[i].uAttributes & OBJECT_40) {
             pSpriteObjects[i].uAttributes &= ~OBJECT_40;
         } else {
-            ObjectDesc *object =
-                &pObjectList->pObjects[pSpriteObjects[i].uObjectDescID];
+            ObjectDesc *object = &pObjectList->vObjects[pSpriteObjects[i].uObjectDescID];
             if (pSpriteObjects[i].AttachedToActor()) {
-                v5 = PID_ID(pSpriteObjects[i].spell_target_pid);
-                pSpriteObjects[i].vPosition.x = pActors[v5].vPosition.x;
-                pSpriteObjects[i].vPosition.y = pActors[v5].vPosition.y;
-                pSpriteObjects[i].vPosition.z =
-                    pActors[v5].vPosition.z + pActors[v5].uActorHeight;
+                int target = PID_ID(pSpriteObjects[i].spell_target_pid);
+                pSpriteObjects[i].vPosition.x = pActors[target].vPosition.x;
+                pSpriteObjects[i].vPosition.y = pActors[target].vPosition.y;
+                pSpriteObjects[i].vPosition.z = pActors[target].vPosition.z + pActors[target].uActorHeight;
                 if (!pSpriteObjects[i].uObjectDescID) continue;
                 pSpriteObjects[i].uSpriteFrameID += pEventTimer->uTimeElapsed;
                 if (!(object->uFlags & OBJECT_DESC_TEMPORARY)) continue;
                 if (pSpriteObjects[i].uSpriteFrameID >= 0) {
-                    v7 = object->uLifetime;
-                    if (pSpriteObjects[i].uAttributes & ITEM_BROKEN)
+                    int v7 = pSpriteObjects[i].GetLifetime();
+                    if (pSpriteObjects[i].uAttributes & ITEM_BROKEN) {
                         v7 = pSpriteObjects[i].field_20;
+                    }
                     if (pSpriteObjects[i].uSpriteFrameID < v7) continue;
                 }
                 SpriteObject::OnInteraction(i);
@@ -5047,9 +5016,10 @@ void UpdateObjects() {
                         SpriteObject::OnInteraction(i);
                         continue;
                     }
-                    v11 = object->uLifetime;
-                    if (pSpriteObjects[i].uAttributes & ITEM_BROKEN)
+                    v11 = pSpriteObjects[i].GetLifetime();
+                    if (pSpriteObjects[i].uAttributes & ITEM_BROKEN) {
                         v11 = pSpriteObjects[i].field_20;
+                    }
                 }
                 if (!(object->uFlags & OBJECT_DESC_TEMPORARY) ||
                     pSpriteObjects[i].uSpriteFrameID < v11) {
@@ -5060,12 +5030,9 @@ void UpdateObjects() {
                     if (!pParty->bTurnBasedModeOn || !(pSpriteObjects[i].uSectorID & 4)) {
                         continue;
                     }
-                    v12 = abs(pParty->vPosition.x -
-                              pSpriteObjects[i].vPosition.x);
-                    v18 = abs(pParty->vPosition.y -
-                              pSpriteObjects[i].vPosition.y);
-                    v19 = abs(pParty->vPosition.z -
-                              pSpriteObjects[i].vPosition.z);
+                    int v12 = abs(pParty->vPosition.x - pSpriteObjects[i].vPosition.x);
+                    int v18 = abs(pParty->vPosition.y - pSpriteObjects[i].vPosition.y);
+                    int v19 = abs(pParty->vPosition.z - pSpriteObjects[i].vPosition.z);
                     if (int_get_vector_length(v12, v18, v19) <= 5120) continue;
                     SpriteObject::OnInteraction(i);
                     continue;

@@ -1158,8 +1158,7 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
     pGameLoadingUI_ProgressBar->Progress();
 
     memcpy(&uNumSpriteObjects, pData, 4);
-    memcpy(pSpriteObjects.data(), pData + 4,
-           uNumSpriteObjects * sizeof(SpriteObject));
+    memcpy(pSpriteObjects.data(), pData + 4, uNumSpriteObjects * sizeof(SpriteObject));
     pData += 4 + uNumSpriteObjects * sizeof(SpriteObject);
 
     pGameLoadingUI_ProgressBar->Progress();

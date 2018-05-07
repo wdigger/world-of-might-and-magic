@@ -1301,10 +1301,7 @@ void GameUI_WritePointedObjectStatusString() {
             pMouse->uPointingObjectID = (unsigned __int16)pickedObjectPID;
             pickedObjectID = (signed)PID_ID(pickedObjectPID);
             if (PID_TYPE(pickedObjectPID) == OBJECT_Item) {
-                if (pObjectList
-                        ->pObjects[pSpriteObjects[pickedObjectID].uObjectDescID]
-                        .uFlags &
-                    0x10) {
+                if (pSpriteObjects[pickedObjectID].IsUnpickable()) {
                     pMouse->uPointingObjectID = 0;
                     game_ui_status_bar_string.clear();
                     bForceDrawFooter = 1;
@@ -2081,9 +2078,7 @@ void GameUI_DrawMinimap(unsigned int uX, unsigned int uY, unsigned int uZ,
                 //     pPoint_Y >= render->raster_clip_y && pPoint_Y <=
                 //     render->raster_clip_w)
                 {
-                    if (pObjectList->pObjects[pSpriteObjects[i].uObjectDescID]
-                            .uFlags &
-                        OBJECT_DESC_UNPICKABLE) {
+                    if (pSpriteObjects[i].IsUnpickable()) {
                         render->RasterLine2D(pPoint_X, pPoint_Y, pPoint_X,
                                              pPoint_Y,
                                              ui_game_minimap_projectile_color);

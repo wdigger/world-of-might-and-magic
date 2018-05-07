@@ -1601,10 +1601,8 @@ void UI_OnMouseRightClick(int mouse_x, int mouse_y) {
                     render->EndScene();
                 }
                 if (PID_TYPE(v5) == OBJECT_Item) {
-                    if (!(pObjectList
-                              ->pObjects[pSpriteObjects[PID_ID((unsigned __int16)v5)].uObjectDescID].uFlags & 0x10)) {
-                        GameUI_DrawItemInfo(
-                            &pSpriteObjects[PID_ID((unsigned __int16)v5)].containing_item);
+                    if (!pSpriteObjects[PID_ID(v5)].IsUnpickable()) {
+                        GameUI_DrawItemInfo(&pSpriteObjects[PID_ID(v5)].containing_item);
                     }
                 }
             }

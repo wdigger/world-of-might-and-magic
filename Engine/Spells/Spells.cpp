@@ -514,10 +514,7 @@ void EventCastSpell(int uSpellID, int uSkillLevel, int uSkill, int fromx,
             spell_sprites.spell_target_pid = 0;
             spell_sprites.uFacing = yaw;
             spell_sprites.uSoundID = 0;
-            launch_speed =
-                pObjectList
-                    ->pObjects[(signed __int16)spell_sprites.uObjectDescID]
-                    .uSpeed;
+            launch_speed = pObjectList->vObjects[spell_sprites.uObjectDescID].uSpeed;
             spell_sprites.Create(yaw, pitch, launch_speed, 0);
             //    pAudioPlayer->PlaySound((SoundID)word_4EE088_sound_ids[uSpellID],
             //    0, 0, fromx, fromy, 0, 0, 0);
@@ -528,10 +525,7 @@ void EventCastSpell(int uSpellID, int uSkillLevel, int uSkill, int fromx,
             spell_sprites.spell_target_pid = 0;
             spell_sprites.uFacing = yaw;
             if (spell_num_objects == 1) {
-                launch_speed =
-                    pObjectList
-                        ->pObjects[(signed __int16)spell_sprites.uObjectDescID]
-                        .uSpeed;
+                launch_speed = pObjectList->vObjects[spell_sprites.uObjectDescID].uSpeed;
                 spell_sprites.Create(yaw, pitch, launch_speed, 0);
             } else {
                 spell_spray_arc =
@@ -542,8 +536,7 @@ void EventCastSpell(int uSpellID, int uSkillLevel, int uSkill, int fromx,
                     spell_sprites.uFacing = i + yaw;
                     spell_sprites.Create(
                         i + yaw, pitch,
-                        pObjectList->pObjects[spell_sprites.uObjectDescID]
-                            .uSpeed,
+                        pObjectList->vObjects[spell_sprites.uObjectDescID].uSpeed,
                         0);
                 }
             }
@@ -562,7 +555,7 @@ void EventCastSpell(int uSpellID, int uSkillLevel, int uSkill, int fromx,
                 spell_sprites.uFacing = i + yaw;
                 spell_sprites.Create(
                     i + yaw, pitch,
-                    pObjectList->pObjects[spell_sprites.uObjectDescID].uSpeed,
+                    pObjectList->vObjects[spell_sprites.uObjectDescID].uSpeed,
                     0);
             }
             //    pAudioPlayer->PlaySound((SoundID)word_4EE088_sound_ids[uSpellID],
@@ -572,8 +565,7 @@ void EventCastSpell(int uSpellID, int uSkillLevel, int uSkill, int fromx,
         case SPELL_EARTH_DEATH_BLOSSOM:
             if (uCurrentlyLoadedLevelType == LEVEL_Indoor) return;
             spell_sprites.spell_target_pid = 4;
-            launch_speed =
-                pObjectList->pObjects[spell_sprites.uObjectDescID].uSpeed;
+            launch_speed = pObjectList->vObjects[spell_sprites.uObjectDescID].uSpeed;
             launch_angle = stru_5C6E00->uIntegerHalfPi / 2;
             spell_sprites.Create(yaw, launch_angle, launch_speed, 0);
             //    pAudioPlayer->PlaySound((SoundID)word_4EE088_sound_ids[uSpellID],

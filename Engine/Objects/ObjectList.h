@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+
+#include "Engine/Strings.h"
 
 enum OBJECT_DESC_FLAGS {
     OBJECT_DESC_NO_SPRITE = 0x1,
@@ -16,19 +19,21 @@ enum OBJECT_DESC_FLAGS {
     OBJECT_DESC_TRIAL_LINE = 0x400,
 };
 
-#pragma pack(push, 1)
-struct ObjectDesc {
-    inline bool NoSprite() const { return uFlags & OBJECT_DESC_NO_SPRITE; }
+class ObjectDesc {
+ public:
+    ObjectDesc(struct ObjectDesc_mm6 *src);
+    ObjectDesc(struct ObjectDesc_mm7 *src);
+    bool NoSprite() const { return uFlags & OBJECT_DESC_NO_SPRITE; }
 
-    char field_0[32];
-    int16_t uObjectID;
-    int16_t uRadius;
-    int16_t uHeight;
-    int16_t uFlags;
-    uint16_t uSpriteID;
-    int16_t uLifetime;
+    String sName;
+    unsigned int uObjectID;
+    unsigned int uRadius;
+    unsigned int uHeight;
+    unsigned int uFlags;
+    unsigned int uSpriteID;
+    unsigned int uLifetime;
     uint32_t uParticleTrailColor;
-    int16_t uSpeed;
+    unsigned int uSpeed;
     uint8_t uParticleTrailColorR;
     uint8_t uParticleTrailColorG;
     uint8_t uParticleTrailColorB;
@@ -36,22 +41,18 @@ struct ObjectDesc {
     char field_36_clr;
     char field_37_clr;
 };
-#pragma pack(pop)
 
 class ObjectList {
  public:
-    inline ObjectList() : uNumObjects(0), pObjects(nullptr) {}
+    inline ObjectList() {}
 
     void FromFile(void *data_mm6, void *data_mm7, void *data_mm8);
     void InitializeSprites();
     void InitializeColors();
     unsigned int ObjectIDByItemID(unsigned int uItemID);
 
- protected:
-    unsigned int uNumObjects;
-
  public:
-    struct ObjectDesc *pObjects;
+    std::vector<ObjectDesc> vObjects;
 };
 
 extern ObjectList *pObjectList;

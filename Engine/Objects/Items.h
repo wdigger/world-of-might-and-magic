@@ -4,8 +4,8 @@
 #include <map>
 
 #include "Engine/Engine.h"
-#include "Engine/Time.h"
 #include "Engine/NZIArray.h"
+#include "Engine/Time.h"
 
 enum DAMAGE_TYPE : unsigned int {
     DMGT_FIRE = 0,
@@ -35,7 +35,7 @@ enum ITEM_FLAGS : unsigned int {
     ITEM_HARDENED = 0x200,
 };
 
-enum ITEM_ENCHANTMENT : unsigned int {
+enum ITEM_ENCHANTMENT : uint32_t {
     ITEM_ENCHANTMENT_NULL = 0,
 
     ITEM_ENCHANTMENT_OF_COLD = 4,          // Adds 3-4 points of cold damage
@@ -319,13 +319,14 @@ struct ItemGen {  // 0x24
     ITEM_EQUIP_TYPE GetItemEquipType();
     unsigned char GetPlayerSkillType();
     char *GetIconName();
-    unsigned __int8 GetDamageDice();
-    unsigned __int8 GetDamageRoll();
-    unsigned __int8 GetDamageMod();
+    uint8_t GetDamageDice();
+    uint8_t GetDamageRoll();
+    uint8_t GetDamageMod();
     bool MerchandiseTest(int _2da_idx);
-    int uItemID;                // 0
-    int uEnchantmentType;       // 4
-    int m_enchantmentStrength;  // 8
+
+    int32_t uItemID;                // 0
+    int32_t uEnchantmentType;       // 4
+    int32_t m_enchantmentStrength;  // 8
     ITEM_ENCHANTMENT
         special_enchantment;  // 25  +5 levels //0c
                               // 16  Drain Hit Points from target.
@@ -345,9 +346,9 @@ struct ItemGen {  // 0x24
                               // skill. 68  Adds 6-8 points of Cold damage and
                               // +5 Armor Class. 71  Prevents drowning damage.
                               // 72  Prevents falling damage.
-    int uNumCharges;              // 10
-    unsigned int uAttributes;     // 14
-    unsigned __int8 uBodyAnchor;  // 18
+    int32_t uNumCharges;              // 10
+    uint32_t uAttributes;     // 14
+    uint8_t uBodyAnchor;  // 18
     char uMaxCharges;             // 19
     char uHolderPlayer;           // 1A
     char field_1B;                // 1B

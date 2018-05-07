@@ -1,8 +1,9 @@
 #pragma once
+
 #include "Engine/Objects/Items.h"
 #include "Engine/VectorTypes.h"
 
-enum SPRITE_OBJECT_TYPE : unsigned __int16 {
+enum SPRITE_OBJECT_TYPE : uint16_t {
     SPRITE_NULL = 0,
 
     SPRITE_SPELL_0 = 10,
@@ -201,6 +202,7 @@ struct SpriteObject {
     void _46BEF1_apply_spells_aoe();
     void ExplosionTraps();
     unsigned int GetLifetime();
+    unsigned int GetSpeed();
     SpriteFrame *GetSpriteFrame();
     bool IsUnpickable();
     bool HasSprite();
@@ -213,29 +215,28 @@ struct SpriteObject {
     static void OnInteraction(unsigned int uLayingItemID);
     static bool sub_42F7EB_DropItemAt(SPRITE_OBJECT_TYPE sprite, int x, int y,
                                       int z, int a4, int count, int a7,
-                                      unsigned __int16 attributes, ItemGen *a9);
+                                      uint16_t attributes, ItemGen *a9);
     static void sub_42F960_create_object(int x, int y, int z);
     static void InitializeSpriteObjects();
 
     SPRITE_OBJECT_TYPE uType;
-    // unsigned __int16 uType;
-    unsigned __int16 uObjectDescID;
+    uint16_t uObjectDescID;
     struct Vec3_int_ vPosition;
     struct Vec3_short_ vVelocity;
-    unsigned __int16 uFacing;
-    unsigned __int16 uSoundID;
-    unsigned __int16 uAttributes;
-    __int16 uSectorID;
-    unsigned __int16 uSpriteFrameID;
-    __int16 field_20;
-    __int16 field_22_glow_radius_multiplier;
+    uint16_t uFacing;
+    uint16_t uSoundID;
+    uint16_t uAttributes;
+    int16_t uSectorID;
+    uint16_t uSpriteFrameID;
+    int16_t field_20;
+    int16_t field_22_glow_radius_multiplier;
     struct ItemGen containing_item;
-    int spell_id;
-    int spell_level;
-    int spell_skill;
-    int field_54;
-    int spell_caster_pid;
-    int spell_target_pid;
+    int32_t spell_id;
+    int32_t spell_level;
+    int32_t spell_skill;
+    int32_t field_54;
+    int32_t spell_caster_pid;
+    int32_t spell_target_pid;
     char field_60_distance_related_prolly_lod;
     char field_61;
     char field_62[2];
@@ -248,5 +249,5 @@ void CompactLayingItemsList();
 extern size_t uNumSpriteObjects;
 extern std::array<SpriteObject, MAX_SPRITE_OBJECTS> pSpriteObjects;
 
-bool _46BFFA_update_spell_fx(unsigned int uLayingItemID, signed int a2);
-void sub_43A97E(unsigned int uLayingItemID, signed int a2);  // idb
+bool _46BFFA_update_spell_fx(unsigned int uLayingItemID, int a2);
+void sub_43A97E(unsigned int uLayingItemID, int a2);  // idb

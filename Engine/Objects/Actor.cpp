@@ -290,7 +290,7 @@ void Actor::AI_SpellAttack(unsigned int uActorID, AIDirection *pDir,
             a1.field_61 = 2;
             v91 = a1.Create(
                 pDir->uYawAngle, pDir->uPitchAngle,
-                pObjectList->pObjects[(int16_t)a1.uObjectDescID].uSpeed, 0);
+                pObjectList->vObjects[(int16_t)a1.uObjectDescID].uSpeed, 0);
             if (v91 != -1) {
                 pAudioPlayer->PlaySpellSound(uSpellID, PID(OBJECT_Item, v91));
                 return;
@@ -370,8 +370,7 @@ void Actor::AI_SpellAttack(unsigned int uActorID, AIDirection *pDir,
                 a1.field_61 = 2;
                 v36 = a1.Create(
                     v32, pitch,
-                    pObjectList->pObjects[(signed __int16)a1.uObjectDescID]
-                        .uSpeed,
+                    pObjectList->vObjects[a1.uObjectDescID].uSpeed,
                     0);
                 if (v36 != -1) {
                     pAudioPlayer->PlaySpellSound(9, PID(OBJECT_Item, v36));
@@ -423,8 +422,7 @@ void Actor::AI_SpellAttack(unsigned int uActorID, AIDirection *pDir,
                     a1.uFacing = v19 + (short)pDir->uYawAngle;
                     v20 = a1.Create(
                         (int16_t)a1.uFacing, pDir->uPitchAngle,
-                        pObjectList->pObjects[(int16_t)a1.uObjectDescID]
-                            .uSpeed,
+                        pObjectList->vObjects[(int16_t)a1.uObjectDescID].uSpeed,
                         0);
                     v19 += v118;
                 } while (v19 <= a1a);
@@ -525,7 +523,7 @@ void Actor::AI_SpellAttack(unsigned int uActorID, AIDirection *pDir,
             return;
 
         case SPELL_BODY_HAMMERHANDS:
-            if ((signed int)masteryLevel <= 0 || (signed int)masteryLevel > 4)
+            if (masteryLevel == 0 || masteryLevel > 4)
                 v51 = 0;
             else
                 v51 = 60 * 60 * realPoints;
@@ -651,9 +649,7 @@ void Actor::AI_SpellAttack(unsigned int uActorID, AIDirection *pDir,
                     a1.uFacing = a1c + (short)pDir->uYawAngle;
                     v80 = a1.Create(
                         v79, pDir->uPitchAngle,
-                        pObjectList->pObjects[(int16_t)a1.uObjectDescID]
-                            .uSpeed,
-                        0);
+                        pObjectList->vObjects[(int16_t)a1.uObjectDescID].uSpeed, 0);
                     a1c += v116;
                 } while (a1c <= spellnume / 2);
             }
@@ -812,9 +808,7 @@ void Actor::AI_RangedAttack(unsigned int uActorID, struct AIDirection *pDir,
         a1.field_60_distance_related_prolly_lod = 3;
 
     a1.field_61 = a4;
-    a1.Create(pDir->uYawAngle, pDir->uPitchAngle,
-              pObjectList->pObjects[(signed __int16)a1.uObjectDescID].uSpeed,
-              0);
+    a1.Create(pDir->uYawAngle, pDir->uPitchAngle, pObjectList->vObjects[a1.uObjectDescID].uSpeed, 0);
     if (pActors[uActorID].pMonsterInfo.uSpecialAbilityType == 1) {
         specAb = pActors[uActorID].pMonsterInfo.uSpecialAbilityDamageDiceBonus;
         if (specAb == 2) {
@@ -825,13 +819,12 @@ void Actor::AI_RangedAttack(unsigned int uActorID, struct AIDirection *pDir,
             a1.Create(
                 pDir->uYawAngle + 30,  // TODO(_) find out why the YawAngle change
                 pDir->uPitchAngle,
-                pObjectList->pObjects[(signed __int16)a1.uObjectDescID].uSpeed,
-                0);
+                pObjectList->vObjects[a1.uObjectDescID].uSpeed, 0);
             v13 = pDir->uYawAngle - 30;
         }
         a1.Create(
             v13, pDir->uPitchAngle,
-            pObjectList->pObjects[(signed __int16)a1.uObjectDescID].uSpeed, 0);
+            pObjectList->vObjects[a1.uObjectDescID].uSpeed, 0);
     }
     return;
 }
