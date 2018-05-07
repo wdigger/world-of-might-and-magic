@@ -164,7 +164,6 @@ void IntegrityTest() {
     static_assert(sizeof(OtherOverlay) == 0x14, "Wrong type size");
     static_assert(sizeof(ItemGen) == 0x24, "Wrong type size");
     static_assert(sizeof(SpriteObject) == 0x70, "Wrong type size");
-    static_assert(sizeof(Chest) == 0x14CC, "Wrong type size");
     static_assert(sizeof(SpellData) == 0x14, "Wrong type size");
     static_assert(sizeof(SpellBuff) == 0x10, "Wrong type size");
     static_assert(sizeof(AIDirection) == 0x1C, "Wrong type size");
@@ -196,7 +195,6 @@ void IntegrityTest() {
     static_assert(sizeof(BSPNode) == 8, "Wrong type size");
     static_assert(sizeof(DDM_DLV_Header) == 40, "Wrong type size");
     static_assert(sizeof(SpriteObject) == 112, "Wrong type size");
-    static_assert(sizeof(Chest) == 5324, "Wrong type size");
     static_assert(sizeof(stru123) == 0xC8, "Wrong type size");
     static_assert(sizeof(BLVMapOutline) == 12, "Wrong type size");
 }
