@@ -13,13 +13,13 @@
 
 #include "Engine/Graphics/DecalBuilder.h"
 #include "Engine/Graphics/DecorationList.h"
-#include "Engine/Graphics/Indoor.h"
 #include "Engine/Graphics/IRender.h"
+#include "Engine/Graphics/Indoor.h"
 #include "Engine/Graphics/LightmapBuilder.h"
 #include "Engine/Graphics/Lights.h"
 #include "Engine/Graphics/Overlays.h"
-#include "Engine/Graphics/ParticleEngine.h"
 #include "Engine/Graphics/PaletteManager.h"
+#include "Engine/Graphics/ParticleEngine.h"
 #include "Engine/Graphics/Viewport.h"
 #include "Engine/Graphics/Vis.h"
 
@@ -38,8 +38,8 @@
 #include "Engine/Tables/PlayerFrameTable.h"
 #include "Engine/Tables/StorylineTextTable.h"
 
-#include "IO/Mouse.h"
 #include "IO/Keyboard.h"
+#include "IO/Mouse.h"
 
 
 using Engine_::IocContainer;

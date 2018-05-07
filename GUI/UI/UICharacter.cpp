@@ -17,10 +17,10 @@
 
 #include "Engine/Spells/CastSpellInfo.h"
 
-#include "GUI/GUIWindow.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFont.h"
 #include "GUI/GUIProgressBar.h"
+#include "GUI/GUIWindow.h"
 #include "GUI/UI/UIInventory.h"
 
 #include "Media/Audio/AudioPlayer.h"
@@ -955,8 +955,7 @@ void CharacterUI_DrawPaperdoll(Player *player) {
     }
 
     render->ResetUIClipRect();
-    render->DrawTextureAlphaNew(467 / 640.0f, 0,
-                                ui_character_inventory_paperdoll_background);
+    render->DrawTextureAlphaNew(467 / 640.0f, 0, ui_character_inventory_paperdoll_background);
     if (IsPlayerWearingWatersuit[uPlayerID]) {  // акваланг
         render->DrawTextureAlphaNew(pPaperdoll_BodyX / 640.0f,
                                     pPaperdoll_BodyY / 480.0f,
@@ -1482,8 +1481,7 @@ void CharacterUI_DrawPaperdoll(Player *player) {
                 }
             }
         }
-        // ----------------------------------------------(Cloak collar/воротник
-        // плаща)-------------------------------------
+        // -----------------------------(Cloak collar/воротник плаща)-------------------------------------
         if (player->GetItem(&PlayerEquipment::uCloak)) {
             item = player->GetCloakItem();
             switch (item->uItemID) {
@@ -1771,14 +1769,12 @@ void CharacterUI_DrawPaperdoll(Player *player) {
                                           v153, player->pEquipment.uShield);
         }
     }
-    // --------------------------------------------------------(RightHand/Правая
-    // кисть)--------------------------------------------------
+    // --------------------------(RightHand/Правая кисть)--------------------------------------------------
     render->DrawTextureAlphaNew(
         (pPaperdoll_BodyX + pPaperdoll_RightHand[pBodyComplection][0]) / 640.0f,
         (pPaperdoll_BodyY + pPaperdoll_RightHand[pBodyComplection][1]) / 480.0f,
         papredoll_drhs[uPlayerID - 1]);
-    // ---------------------------------------------(two-handed - hand/Двуручие -
-    // рука)--------------------------------------------------
+    // --------------------------(two-handed - hand/Двуручие - рука)--------------------------------------------------
     if (player->GetItem(&PlayerEquipment::uMainHand)) {
         if (player->GetMainHandItem()->GetItemEquipType() == EQUIP_TWO_HANDED ||
             player->GetMainHandItem()->GetPlayerSkillType() ==
@@ -1793,8 +1789,7 @@ void CharacterUI_DrawPaperdoll(Player *player) {
                     480.0f,
                 papredoll_dlaus[uPlayerID - 1]);
     }
-    // --------------------------------------------------------(two-handed -
-    // fist/двуручие - кисть)----------------------------------------------------
+    // ----------------------------(two-handed - fist/двуручие - кисть)----------------------------------------------------
     if (player->GetItem(&PlayerEquipment::uMainHand)) {
         item = player->GetMainHandItem();
         if (item->GetItemEquipType() == EQUIP_TWO_HANDED ||
@@ -1834,8 +1829,7 @@ void CharacterUI_InventoryTab_Draw(Player *player, bool Cover_Strip) {
 
     for (uint i = 0; i < 126; ++i) {
         if (player->pInventoryMatrix[i] <= 0) continue;
-        if (!player->pInventoryItemList[player->pInventoryMatrix[i] - 1]
-                 .uItemID)
+        if (!player->pInventoryItemList[player->pInventoryMatrix[i] - 1].uItemID)
             continue;
         unsigned int uCellY = 32 * (i / 14) + 17;
         unsigned int uCellX = 32 * (i % 14) + 14;

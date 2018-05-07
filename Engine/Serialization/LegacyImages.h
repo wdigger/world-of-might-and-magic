@@ -19,7 +19,7 @@ struct SpriteFrame_MM6 {
     char pTextureName[12];    // c
     int16_t pHwSpriteIDs[8];  // 18h
     int32_t scale;            // 28h
-    int uFlags;               // 2c
+    int32_t uFlags;           // 2c
     int16_t uGlowRadius;      // 30
     int16_t uPaletteID;       // 32
     int16_t uPaletteIndex;
@@ -39,10 +39,10 @@ struct SpriteFrame_MM7 : public SpriteFrame_MM6 {
 struct BLVFace_MM7 {  // 60h
     struct Plane_float_ pFacePlane;
     struct Plane_int_ pFacePlane_old;
-    int zCalc1;
-    int zCalc2;
-    int zCalc3;
-    unsigned int uAttributes;
+    int32_t zCalc1;
+    int32_t zCalc2;
+    int32_t zCalc3;
+    uint32_t uAttributes;
     uint16_t *pVertexIDs;
     int16_t *pXInterceptDisplacements;
     int16_t *pYInterceptDisplacements;
