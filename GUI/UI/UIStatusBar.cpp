@@ -13,7 +13,7 @@
 #include "Platform/Api.h"
 
 void GameUI_StatusBar_Set(const String &str) {
-    if (str.length() > 0) {
+    if (!str.empty()) {
         if (!game_ui_status_bar_event_string_time_left) {
             game_ui_status_bar_string = str;
         }
@@ -61,7 +61,7 @@ void GameUI_StatusBar_NothingHere() {
 }
 
 void GameUI_StatusBar_DrawForced() {
-    if (game_ui_status_bar_string.length() > 0 ||
+    if (!game_ui_status_bar_string.empty() ||
         game_ui_status_bar_event_string_time_left || bForceDrawFooter) {
         bForceDrawFooter = false;
         GameUI_StatusBar_Draw();
@@ -78,7 +78,7 @@ void GameUI_StatusBar_Draw() {
         status = game_ui_status_bar_string;
     }
 
-    if (status.length() > 0) {
+    if (!status.empty()) {
         pPrimaryWindow->DrawText(
             pFontLucida, pFontLucida->AlignText_Center(450, status) + 11, 357,
             uGameUIFontMain, status, 0, 0, uGameUIFontShadow);

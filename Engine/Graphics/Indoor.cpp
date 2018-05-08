@@ -2376,8 +2376,8 @@ void PrepareToLoadBLV(unsigned int bLoading) {
 
         DecorationDesc *decoration = pDecorationList->GetDecoration(pLevelDecorations[i].uDecorationDescID);
 
-        if (decoration->uSoundID && _6807E0_num_decorations_with_sounds_6807B8 < 9) {
-            // pSoundList->LoadSound(decoration->uSoundID, 0);
+        if (decoration->uSoundID) {
+            pAudioPlayer->PlaySound((SoundID)decoration->uSoundID, PID(OBJECT_Decoration, i), 1000000, 0, 0, 0);
             _6807B8_level_decorations_ids[_6807E0_num_decorations_with_sounds_6807B8++] = i;
         }
 
