@@ -3494,16 +3494,18 @@ enum CHARACTER_RACE Player::GetRace() const {
 }
 
 String Player::GetRaceName() const {
+    String race;
     switch (this->GetRace()) {
         case 0:
-            return localization->GetString(99);  // "Human"
+            race = localization->GetString(99);  // "Human"
         case 1:
-            return localization->GetString(103);  // "Dwarf"
+            race = localization->GetString(103);  // "Dwarf"
         case 2:
-            return localization->GetString(106);  // "Goblin"
+            race = localization->GetString(106);  // "Goblin"
         case 3:
-            return localization->GetString(101);  // "Elf"
+            race = localization->GetString(101);  // "Elf"
     }
+    return race;
 }
 
 //----- (00490141) --------------------------------------------------------
