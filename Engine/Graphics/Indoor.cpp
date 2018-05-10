@@ -2361,10 +2361,10 @@ void PrepareToLoadBLV(unsigned int bLoading) {
     pGameLoadingUI_ProgressBar->Progress();
 
     v35 = 0;
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        pDecorationList->InitializeDecorationSprite(pLevelDecorations[i].uDecorationDescID);
+    for (LevelDecoration &decor : pLevelDecorations) {
+        pDecorationList->InitializeDecorationSprite(decor.uDecorationDescID);
 
-        DecorationDesc *decoration = pDecorationList->GetDecoration(pLevelDecorations[i].uDecorationDescID);
+        DecorationDesc *decoration = pDecorationList->GetDecoration(decor.uDecorationDescID);
 
         if (decoration->uSoundID) {
             pAudioPlayer->PlaySound((SoundID)decoration->uSoundID, PID(OBJECT_Decoration, i), 1000000, 0, 0, 0);
@@ -2375,8 +2375,7 @@ void PrepareToLoadBLV(unsigned int bLoading) {
             if (!decoration->DontDraw()) {
                 if (decoration->uLightRadius) {
                     unsigned char r = 255, g = 255, b = 255;
-                    if (/*render->pRenderD3D*/ true &&
-                        render->config->is_using_colored_lights) {
+                    if (render->config->is_using_colored_lights) {
                         r = decoration->uColoredLightRed;
                         g = decoration->uColoredLightGreen;
                         b = decoration->uColoredLightBlue;
@@ -2384,8 +2383,7 @@ void PrepareToLoadBLV(unsigned int bLoading) {
                     pStationaryLightsStack->AddLight(
                         pLevelDecorations[i].vPosition.x,
                         pLevelDecorations[i].vPosition.y,
-                        pLevelDecorations[i].vPosition.z +
-                            decoration->uDecorationHeight,
+                        pLevelDecorations[i].vPosition.z + decoration->uDecorationHeight,
                         decoration->uLightRadius, r, g, b, _4E94D0_light_type);
                 }
             }
