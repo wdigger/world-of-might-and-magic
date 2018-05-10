@@ -389,7 +389,7 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
         if (uCurrentlyLoadedLevelType == LEVEL_Indoor) {
             pIndoor->dlv.uNumFacesInBModels = pIndoor->uNumFaces;
             pIndoor->dlv.uNumBModels = 0;
-            pIndoor->dlv.uNumDecorations = uNumLevelDecorations;
+            pIndoor->dlv.uNumDecorations = pLevelDecorations.size();
             memcpy(data_write_pos, &pIndoor->dlv, sizeof(DDM_DLV_Header));  // 0x28
             data_write_pos += sizeof(DDM_DLV_Header);
             memcpy(data_write_pos, pIndoor->_visible_outlines, 0x36B);
@@ -399,8 +399,8 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
                 data_write_pos += 4;
             }
 
-            for (int i = 0; i < (signed int)uNumLevelDecorations; ++i) {
-                memcpy(data_write_pos, &pLevelDecorations[i].uFlags, 2);
+            for (LevelDecoration &decoration : pLevelDecorations) {
+                memcpy(data_write_pos, &decoration.uFlags, 2);
                 data_write_pos += 2;
             }
             memcpy(data_write_pos, &uNumActors, 4);
@@ -409,8 +409,7 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
             data_write_pos += uNumActors * sizeof(Actor);
             memcpy(data_write_pos, &uNumSpriteObjects, 4);
             data_write_pos += 4;
-            memcpy(data_write_pos, pSpriteObjects.data(),
-                   112 * uNumSpriteObjects);
+            memcpy(data_write_pos, pSpriteObjects.data(), 112 * uNumSpriteObjects);
             data_write_pos += 112 * uNumSpriteObjects;
 
             data_write_pos = ChestsSerialize(data_write_pos);
@@ -431,14 +430,12 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
                 pOutdoor->ddm.uNumFacesInBModels += model.pFaces.size();
             }
             pOutdoor->ddm.uNumBModels = pOutdoor->pBModels.size();
-            pOutdoor->ddm.uNumDecorations = uNumLevelDecorations;
-            memcpy(data_write_pos, &pOutdoor->ddm,
-                   sizeof(DDM_DLV_Header));  // 0x28
+            pOutdoor->ddm.uNumDecorations = pLevelDecorations.size();
+            memcpy(data_write_pos, &pOutdoor->ddm, sizeof(DDM_DLV_Header));  // 0x28
             data_write_pos += sizeof(DDM_DLV_Header);
             memcpy(data_write_pos, pOutdoor->uFullyRevealedCellOnMap, 0x3C8);
             data_write_pos += 968;
-            memcpy(data_write_pos, pOutdoor->uPartiallyRevealedCellOnMap,
-                   0x3C8);
+            memcpy(data_write_pos, pOutdoor->uPartiallyRevealedCellOnMap, 0x3C8);
             data_write_pos += 968;
             for (BSPModel &model : pOutdoor->pBModels) {
                 for (ODMFace &face : model.pFaces) {
@@ -447,8 +444,8 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
                 }
             }
 
-            for (size_t i = 0; i < uNumLevelDecorations; ++i) {
-                memcpy(data_write_pos, &pLevelDecorations[i].uFlags, 2);
+            for (LevelDecoration &decoration : pLevelDecorations) {
+                memcpy(data_write_pos, &decoration.uFlags, 2);
                 data_write_pos += 2;
             }
             memcpy(data_write_pos, &uNumActors, 4);

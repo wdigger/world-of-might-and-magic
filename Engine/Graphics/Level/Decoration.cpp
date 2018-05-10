@@ -2,15 +2,12 @@
 
 #include <cstdlib>
 
-#include "../../Party.h"
 #include "Engine/Engine.h"
+#include "Engine/Graphics/DecorationList.h"
+#include "Engine/Party.h"
 
-std::array<LevelDecoration, 3000> pLevelDecorations;
-size_t uNumLevelDecorations;
+std::vector<LevelDecoration> pLevelDecorations;
 LevelDecoration* activeLevelDecoration;
-
-//----- (004583B0) --------------------------------------------------------
-LevelDecoration::LevelDecoration() { memset(this, 0, sizeof(*this)); }
 
 //----- (00450929) --------------------------------------------------------
 int LevelDecoration::GetGlobalEvent() {
@@ -364,4 +361,68 @@ bool LevelDecoration::IsInteractive() {
         return true;
 
     return false;
+}
+
+#pragma pack(push, 1)
+struct LevelDecoration_mm7 {
+    uint16_t uDecorationDescID;
+    uint16_t uFlags;
+    Vec3_int_ vPosition;
+    int32_t field_10_y_rot;
+    uint16_t uCog;
+    uint16_t uEventID;
+    uint16_t uTriggerRange;
+    int16_t field_1A;
+    int16_t _idx_in_stru123;
+    int16_t field_1E;
+};
+#pragma pack(pop)
+
+char *LevelDecorationsSerialize(char *pData) {
+}
+
+char *LevelDecorationsDeserialize(char *pData) {
+    uint32_t uNumLevelDecorations;
+    memcpy(&uNumLevelDecorations, pData, 4);
+    pData += 4;
+
+    LevelDecoration_mm7 *decorations = (LevelDecoration_mm7*)pData;
+    char *names = pData + (uNumLevelDecorations * sizeof(LevelDecoration_mm7));
+    for (size_t i = 0; i < uNumLevelDecorations; i++) {
+        pData += sizeof(LevelDecoration_mm7);
+        names += 32;
+    }
+
+    return names;
+}
+
+LevelDecoration::LevelDecoration(struct LevelDecoration_mm7 *pDecoration, const String &pDescName) {
+    uDecorationDescID = pDecorationList->GetDecorIdByName(pDescName.c_str());
+    uFlags = pDecoration->uFlags;
+    vPosition = pDecoration->vPosition;
+    field_10_y_rot = pDecoration->field_10_y_rot;
+    uCog = pDecoration->uCog;
+    uEventID = pDecoration->uEventID;
+    uTriggerRange = pDecoration->uTriggerRange;
+    field_1A = pDecoration->field_1A;
+    _idx_in_stru123 = pDecoration->_idx_in_stru123;
+    field_1E = pDecoration->field_1E;
+}
+
+void SetDecorationSprite(uint16_t uCog, bool bHide, const char *pFileName) {
+    for (LevelDecoration &decoration : pLevelDecorations) {
+        if (decoration.uCog == uCog) {
+            if (pFileName && strcmp(pFileName, "0")) {
+                decoration.uDecorationDescID = pDecorationList->GetDecorIdByName(pFileName);
+                pDecorationList->InitializeDecorationSprite(decoration.uDecorationDescID);
+            }
+
+            if (bHide)
+                decoration.uFlags &= ~LEVEL_DECORATION_INVISIBLE;
+            else
+                decoration.uFlags |= LEVEL_DECORATION_INVISIBLE;
+
+            pParty->uFlags |= 2;
+        }
+    }
 }

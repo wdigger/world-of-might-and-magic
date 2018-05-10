@@ -2,9 +2,9 @@
 
 #include <cstdlib>
 
+#include "Engine/Engine.h"
 #include "Engine/Tables/FrameTableInc.h"
 #include "Engine/stru123.h"
-#include "Engine/Engine.h"
 #include "Level/Decoration.h"
 #include "Sprites.h"
 
@@ -71,15 +71,12 @@ void RespawnGlobalDecorations() {
     memset(stru_5E4C90_MapPersistVars._decor_events.data(), 0, 125);
 
     uint decorEventIdx = 0;
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        LevelDecoration *decor = &pLevelDecorations[i];
-
-        if (!decor->uEventID) {
-            if (decor->IsInteractive()) {
+    for (LevelDecoration &decoration : pLevelDecorations) {
+        if (!decoration.uEventID) {
+            if (decoration.IsInteractive()) {
                 if (decorEventIdx < 124) {
-                    decor->_idx_in_stru123 = decorEventIdx + 75;
-                    stru_5E4C90_MapPersistVars._decor_events[decorEventIdx++] =
-                        decor->GetGlobalEvent();
+                    decoration._idx_in_stru123 = decorEventIdx + 75;
+                    stru_5E4C90_MapPersistVars._decor_events[decorEventIdx++] = decoration.GetGlobalEvent();
                 }
             }
         }

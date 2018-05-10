@@ -330,22 +330,18 @@ void TeleportToStartingPoint(MapStartPoint point) {
 
     strcpy(pName, model_name);
     if (pDecorationList->GetDecorIdByName(pName)) {
-        if (uNumLevelDecorations > 0) {
-            for (size_t i = 0; i < uNumLevelDecorations; ++i) {
-                if (pLevelDecorations[i].uDecorationDescID == pDecorationList->GetDecorIdByName(pName)) {
-                    pParty->vPosition.x = pLevelDecorations[i].vPosition.x;
-                    pParty->vPosition.y = pLevelDecorations[i].vPosition.y;
-                    pParty->vPosition.z = pLevelDecorations[i].vPosition.z;
-                    pParty->uFallStartY = pParty->vPosition.z;
-                    pParty->sRotationY = (int)(stru_5C6E00->uIntegerHalfPi *
-                                     pLevelDecorations[i].field_1A) /
-                        90;
-                    if (pLevelDecorations[i].field_10_y_rot)
-                        pParty->sRotationY =
-                            pLevelDecorations[i].field_10_y_rot;
-                    pParty->sRotationX = 0;
-                    pParty->uFallSpeed = 0;
+        for (LevelDecoration &decoration : pLevelDecorations) {
+            if (decoration.uDecorationDescID == pDecorationList->GetDecorIdByName(pName)) {
+                pParty->vPosition.x = decoration.vPosition.x;
+                pParty->vPosition.y = decoration.vPosition.y;
+                pParty->vPosition.z = decoration.vPosition.z;
+                pParty->uFallStartY = pParty->vPosition.z;
+                pParty->sRotationY = (int)(stru_5C6E00->uIntegerHalfPi * decoration.field_1A) / 90;
+                if (decoration.field_10_y_rot) {
+                    pParty->sRotationY = decoration.field_10_y_rot;
                 }
+                pParty->sRotationX = 0;
+                pParty->uFallSpeed = 0;
             }
         }
         if (dword_5B65C0) {

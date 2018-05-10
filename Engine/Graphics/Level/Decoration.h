@@ -1,9 +1,10 @@
 #pragma once
 
-#include <array>
 #include <cstdint>
+#include <vector>
 
-#include "../../VectorTypes.h"
+#include "Engine/Strings.h"
+#include "Engine/VectorTypes.h"
 
 enum LEVEL_DECORATION_FLAGS : uint16_t {
     LEVEL_DECORATION_TRIGGERED_BY_TOUCH = 0x01,
@@ -15,10 +16,8 @@ enum LEVEL_DECORATION_FLAGS : uint16_t {
     LEVEL_DECORATION_OBELISK_CHEST = 0x40,
 };
 
-/*   74 */
-#pragma pack(push, 1)
 struct LevelDecoration {
-    LevelDecoration();
+    LevelDecoration(struct LevelDecoration_mm7 *pDecoration, const String &pDescName);
     int GetGlobalEvent();
     bool IsInteractive();
     bool IsObeliskChestActive();
@@ -35,7 +34,10 @@ struct LevelDecoration {
     int16_t field_1E;
 };
 
-extern std::array<LevelDecoration, 3000> pLevelDecorations;
-extern size_t uNumLevelDecorations;
-extern LevelDecoration* activeLevelDecoration;  // 5C3420
-#pragma pack(pop)
+extern std::vector<LevelDecoration> pLevelDecorations;
+extern LevelDecoration* activeLevelDecoration;
+
+char *LevelDecorationsSerialize(char *pData);
+char *LevelDecorationsDeserialize(char *pData);
+
+void SetDecorationSprite(uint16_t uCog, bool bHide, const char *pFileName);

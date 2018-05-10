@@ -946,8 +946,7 @@ LABEL_47:
                     ++curr_seq_num;
                     break;
                 case EVENT_SetSprite:
-                    SetDecorationSprite(EVT_DWORD(_evt->v5), _evt->v9,
-                                        (char *)&_evt->v10);
+                    SetDecorationSprite(EVT_DWORD(_evt->v5), _evt->v9, (char *)&_evt->v10);
                     ++curr_seq_num;
                     break;
                 case EVENT_SummonMonsters:
@@ -1204,9 +1203,13 @@ void init_event_triggers() {
     uint id = pDecorationList->GetDecorIdByName("Event Trigger");
 
     num_event_triggers = 0;
-    for (uint i = 0; i < uNumLevelDecorations; ++i)
-        if (pLevelDecorations[i].uDecorationDescID == id)
+    int i = 0;
+    for (LevelDecoration &decoration : pLevelDecorations) {
+        if (decoration.uDecorationDescID == id) {
             event_triggers[num_event_triggers++] = i;
+        }
+        i++;
+    }
 }
 
 //----- (0046CC4B) --------------------------------------------------------

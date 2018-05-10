@@ -1025,17 +1025,7 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
     pGameLoadingUI_ProgressBar->Progress();
     pGameLoadingUI_ProgressBar->Progress();
 
-    memcpy(&uNumLevelDecorations, pData, 4);
-    memcpy(pLevelDecorations.data(), pData + 4,
-           uNumLevelDecorations * sizeof(LevelDecoration));
-    pData += 4 + uNumLevelDecorations * sizeof(LevelDecoration);
-
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        pLevelDecorations[i].uDecorationDescID =
-            pDecorationList->GetDecorIdByName(pData);
-
-        pData += 32;
-    }
+    pData = LevelDecorationsDeserialize(pData);
 
     pGameLoadingUI_ProgressBar->Progress();
 
@@ -1081,9 +1071,9 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
 
     if (dlv.uNumFacesInBModels > 0) {
         if (dlv.uNumDecorations > 0) {
-            if (dlv.uNumFacesInBModels != uNumFaces ||
-                dlv.uNumDecorations != uNumLevelDecorations)
+            if (dlv.uNumFacesInBModels != uNumFaces || dlv.uNumDecorations != pLevelDecorations.size()) {
                 _v244 = true;
+            }
         }
     }
 
@@ -1143,8 +1133,8 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
 
     pGameLoadingUI_ProgressBar->Progress();
 
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        memcpy(&pLevelDecorations[i].uFlags, pData, 2);
+    for (LevelDecoration &decoration : pLevelDecorations) {
+        memcpy(&decoration.uFlags, pData, 2);
         pData += 2;
     }
 

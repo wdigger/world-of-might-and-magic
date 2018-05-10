@@ -1426,8 +1426,9 @@ void Engine::_461103_load_level_sub() {
 
     if (engine->config->NoActors())
         uNumActors = 0;
-    if (engine->config->NoDecorations())
-        uNumLevelDecorations = 0;
+    if (engine->config->NoDecorations()) {
+        pLevelDecorations.clear();
+    }
     init_event_triggers();
 
     pGameLoadingUI_ProgressBar->Progress();
@@ -1553,25 +1554,6 @@ void sub_44892E_set_faces_bit(int sCogNumber, int bit, int on) {
             }
         }
         pParty->uFlags |= 2;
-    }
-}
-
-//----- (0044882F) --------------------------------------------------------
-void SetDecorationSprite(uint16_t uCog, bool bHide, const char *pFileName) {
-    for (size_t i = 0; i < uNumLevelDecorations; i++) {
-        if (pLevelDecorations[i].uCog == uCog) {
-            if (pFileName && strcmp(pFileName, "0")) {
-                pLevelDecorations[i].uDecorationDescID = pDecorationList->GetDecorIdByName(pFileName);
-                pDecorationList->InitializeDecorationSprite(pLevelDecorations[i].uDecorationDescID);
-            }
-
-            if (bHide)
-                pLevelDecorations[i].uFlags &= ~LEVEL_DECORATION_INVISIBLE;
-            else
-                pLevelDecorations[i].uFlags |= LEVEL_DECORATION_INVISIBLE;
-
-            pParty->uFlags |= 2;
-        }
     }
 }
 
