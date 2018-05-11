@@ -83,8 +83,7 @@ bool Chest::Open(int uChestID) {
             if (PID_TYPE(EvtTargetObj) == OBJECT_Decoration) {
                 pObjectX = pLevelDecorations[v6].vPosition.x;
                 pObjectY = pLevelDecorations[v6].vPosition.y;
-                pObjectZ = pLevelDecorations[v6].vPosition.z +
-                    (pDecorationList->GetDecoration(pLevelDecorations[v6].uDecorationDescID)->uDecorationHeight / 2);
+                pObjectZ = pLevelDecorations[v6].vPosition.z + (pLevelDecorations[v6].pDecorationDesc->uDecorationHeight / 2);
             }
             if (PID_TYPE(EvtTargetObj) == OBJECT_BModel) {
                 if (uCurrentlyLoadedLevelType == LEVEL_Outdoor) {

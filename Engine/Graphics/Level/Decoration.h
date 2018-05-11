@@ -22,7 +22,7 @@ struct LevelDecoration {
     bool IsInteractive();
     bool IsObeliskChestActive();
 
-    uint16_t uDecorationDescID;
+    struct DecorationDesc *pDecorationDesc;
     uint16_t uFlags;
     Vec3_int_ vPosition;
     int32_t field_10_y_rot;
@@ -32,6 +32,7 @@ struct LevelDecoration {
     int16_t field_1A;
     int16_t _idx_in_stru123;
     int16_t field_1E;
+    String sDescName;
 };
 
 extern std::vector<LevelDecoration> pLevelDecorations;

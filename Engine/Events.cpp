@@ -1200,12 +1200,10 @@ char *GetEventHintString(unsigned int uEventID) {
 
 //----- (004613C4) --------------------------------------------------------
 void init_event_triggers() {
-    uint id = pDecorationList->GetDecorIdByName("Event Trigger");
-
     num_event_triggers = 0;
     int i = 0;
     for (LevelDecoration &decoration : pLevelDecorations) {
-        if (decoration.uDecorationDescID == id) {
+        if (decoration.sDescName == "Event Trigger") {
             event_triggers[num_event_triggers++] = i;
         }
         i++;

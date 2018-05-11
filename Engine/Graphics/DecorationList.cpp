@@ -42,8 +42,8 @@ void DecorationList::FromFile(void *data_mm6, void *data_mm7, void *data_mm8) {
     }
 }
 
-void DecorationList::InitializeDecorationSprite(unsigned int uDecID) {
-    pSpriteFrameTable->InitializeSprite(this->pDecorations[uDecID].uSpriteID);
+void DecorationList::InitializeDecorationSprite(struct DecorationDesc *pDecorationDesc) {
+    pSpriteFrameTable->InitializeSprite(pDecorationDesc->uSpriteID);
 }
 
 void DecorationList::ToFile() {

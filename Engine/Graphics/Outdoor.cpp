@@ -1555,9 +1555,10 @@ bool OutdoorLocation::PrepareDecorations() {
         v8 = 1;
     }
 
+    int i = 0;
     for (LevelDecoration &decor : pLevelDecorations) {
-        pDecorationList->InitializeDecorationSprite(decor.uDecorationDescID);
-        DecorationDesc *decoration = pDecorationList->GetDecoration(decor.uDecorationDescID);
+        pDecorationList->InitializeDecorationSprite(decor.pDecorationDesc);
+        DecorationDesc *decoration = decor.pDecorationDesc;
         if (decoration->uSoundID) {
             pAudioPlayer->PlaySound((SoundID)decoration->uSoundID, PID(OBJECT_Decoration, i), 1000000, 0, 0, 0);
         }
@@ -1574,6 +1575,8 @@ bool OutdoorLocation::PrepareDecorations() {
                 }
             }
         }
+
+        i++;
     }
 
     pGameLoadingUI_ProgressBar->Progress();

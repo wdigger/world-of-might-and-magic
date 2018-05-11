@@ -35,7 +35,7 @@ struct DecorationDesc_mm6 {
     }
 
     char pName[32];
-    char field_20[32];
+    char pDescription[32];
     int16_t uType;
     uint16_t uDecorationHeight;
     int16_t uRadius;
@@ -60,7 +60,7 @@ class DecorationList {
 
     void ToFile();
     void FromFile(void *data_mm6, void *data_mm7, void *data_mm8);
-    void InitializeDecorationSprite(unsigned int uDecID);
+    void InitializeDecorationSprite(struct DecorationDesc *pDecorationDesc);
     uint16_t GetDecorIdByName(const char *pName);
     DecorationDesc *GetDecoration(unsigned int index) {
         return &pDecorations[index];

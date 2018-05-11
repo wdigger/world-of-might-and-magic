@@ -9,22 +9,8 @@
 std::vector<LevelDecoration> pLevelDecorations;
 LevelDecoration* activeLevelDecoration;
 
-//----- (00450929) --------------------------------------------------------
 int LevelDecoration::GetGlobalEvent() {
-    // LevelDecoration *v1; // esi@1
-    // signed int v2; // eax@1
-    // int v3; // eax@5
-    // int v4; // eax@6
-    // int v5; // eax@7
-    // int v6; // eax@8
-    // int v7; // eax@9
-    // int result; // eax@14
-    // int v9; // eax@18
-    // int v10; // eax@19
-    // int v11; // eax@20
-    // int v12; // eax@21
-    // int v13; // eax@22
-
+/*
     switch (uDecorationDescID) {
         case 0:
         case 1:
@@ -302,6 +288,8 @@ int LevelDecoration::GetGlobalEvent() {
         default:
             Error("Invalid DecorationDescID: %u", uDecorationDescID);
     }
+*/
+    return 0;
 }
 
 //----- (0047A825) --------------------------------------------------------
@@ -340,6 +328,7 @@ bool LevelDecoration::IsObeliskChestActive() {
 
 //----- (0044C2F4) --------------------------------------------------------
 bool LevelDecoration::IsInteractive() {
+/*
     switch (uDecorationDescID) {
         case 4:    // trash pile
         case 5:    // campfire
@@ -359,7 +348,7 @@ bool LevelDecoration::IsInteractive() {
         return true;
     if (uDecorationDescID >= 210 && uDecorationDescID <= 221)  // magic pedestal
         return true;
-
+*/
     return false;
 }
 
@@ -379,9 +368,12 @@ struct LevelDecoration_mm7 {
 #pragma pack(pop)
 
 char *LevelDecorationsSerialize(char *pData) {
+    return nullptr;
 }
 
 char *LevelDecorationsDeserialize(char *pData) {
+    static_assert(sizeof(LevelDecoration_mm7) == 0x20, "Wrong type size");
+
     uint32_t uNumLevelDecorations;
     memcpy(&uNumLevelDecorations, pData, 4);
     pData += 4;
@@ -389,7 +381,9 @@ char *LevelDecorationsDeserialize(char *pData) {
     LevelDecoration_mm7 *decorations = (LevelDecoration_mm7*)pData;
     char *names = pData + (uNumLevelDecorations * sizeof(LevelDecoration_mm7));
     for (size_t i = 0; i < uNumLevelDecorations; i++) {
-        pData += sizeof(LevelDecoration_mm7);
+        LevelDecoration decor(decorations, names);
+        pLevelDecorations.push_back(decor);
+        decorations++;
         names += 32;
     }
 
@@ -397,7 +391,7 @@ char *LevelDecorationsDeserialize(char *pData) {
 }
 
 LevelDecoration::LevelDecoration(struct LevelDecoration_mm7 *pDecoration, const String &pDescName) {
-    uDecorationDescID = pDecorationList->GetDecorIdByName(pDescName.c_str());
+    pDecorationDesc = pDecorationList->GetDecoration(pDecorationList->GetDecorIdByName(pDescName.c_str()));
     uFlags = pDecoration->uFlags;
     vPosition = pDecoration->vPosition;
     field_10_y_rot = pDecoration->field_10_y_rot;
@@ -407,14 +401,16 @@ LevelDecoration::LevelDecoration(struct LevelDecoration_mm7 *pDecoration, const 
     field_1A = pDecoration->field_1A;
     _idx_in_stru123 = pDecoration->_idx_in_stru123;
     field_1E = pDecoration->field_1E;
+    sDescName = pDescName;
 }
 
 void SetDecorationSprite(uint16_t uCog, bool bHide, const char *pFileName) {
     for (LevelDecoration &decoration : pLevelDecorations) {
         if (decoration.uCog == uCog) {
             if (pFileName && strcmp(pFileName, "0")) {
-                decoration.uDecorationDescID = pDecorationList->GetDecorIdByName(pFileName);
-                pDecorationList->InitializeDecorationSprite(decoration.uDecorationDescID);
+                unsigned int uDecorationDescID = pDecorationList->GetDecorIdByName(pFileName);
+                decoration.pDecorationDesc = pDecorationList->GetDecoration(uDecorationDescID);
+                pDecorationList->InitializeDecorationSprite(decoration.pDecorationDesc);
             }
 
             if (bHide)

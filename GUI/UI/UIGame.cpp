@@ -1325,7 +1325,7 @@ void GameUI_WritePointedObjectStatusString() {
                                            [pLevelDecorations[pickedObjectID]._idx_in_stru123 -
                                             75] + 380].pTopic;  // неверно для костра
                     else
-                        pText = pDecorationList->GetDecoration(pLevelDecorations[pickedObjectID].uDecorationDescID)->field_20;
+                        pText = pLevelDecorations[pickedObjectID].pDecorationDesc->pDescription;
                     GameUI_StatusBar_Set(pText);
                 } else {
                     char *hintString = GetEventHintString(pLevelDecorations[pickedObjectID].uEventID);
@@ -2156,17 +2156,10 @@ void GameUI_DrawMinimap(unsigned int uX, unsigned int uY, unsigned int uZ,
                 }
             }
         }
-        for (uint i = 0; i < (signed int)uNumLevelDecorations;
-             ++i) {  // draw items(отрисовка предметов)
-            if (pLevelDecorations[i].uFlags & 8) {
-                pPoint_X =
-                    uCenterX + (fixpoint_mul((pLevelDecorations[i].vPosition.x -
-                                              pParty->vPosition.x),
-                                             uZoom));
-                pPoint_Y =
-                    uCenterY - (fixpoint_mul((pLevelDecorations[i].vPosition.y -
-                                              pParty->vPosition.y),
-                                             uZoom));
+        for (LevelDecoration &decor : pLevelDecorations) {  // draw items (отрисовка предметов)
+            if (decor.uFlags & 8) {
+                pPoint_X = uCenterX + (fixpoint_mul((decor.vPosition.x - pParty->vPosition.x), uZoom));
+                pPoint_Y = uCenterY - (fixpoint_mul((decor.vPosition.y - pParty->vPosition.y), uZoom));
                 // if ( pPoint_X >= render->raster_clip_x && pPoint_X <=
                 // render->raster_clip_z
                 //  && pPoint_Y >= render->raster_clip_y && pPoint_Y <=

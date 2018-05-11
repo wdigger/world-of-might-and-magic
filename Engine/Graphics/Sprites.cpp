@@ -1,8 +1,8 @@
 #include "Engine/Graphics/Sprites.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include <algorithm>
 
 #include "Engine/Engine.h"
 #include "Engine/LOD.h"
@@ -432,7 +432,6 @@ void _46E26D_collide_against_sprites(int a1, int a2) {
     unsigned __int16 *v3;   // eax@5
     unsigned __int16 v4;    // ax@6
     LevelDecoration *v5;    // edi@7
-    DecorationDesc *v6;     // esi@8
     int v7;                 // edx@9
     int v8;                 // eax@9
     int v9;                 // ecx@11
@@ -465,7 +464,7 @@ void _46E26D_collide_against_sprites(int a1, int a2) {
                                     &pLevelDecorations[(signed __int16)v4 >> 3];
                                 if (!(v5->uFlags &
                                       LEVEL_DECORATION_INVISIBLE)) {
-                                    v6 = pDecorationList->GetDecoration(v5->uDecorationDescID);
+                                    DecorationDesc *v6 = v5->pDecorationDesc;
                                     if (!v6->CanMoveThrough()) {
                                         v7 = v6->uRadius;
                                         v8 = v5->vPosition.x;

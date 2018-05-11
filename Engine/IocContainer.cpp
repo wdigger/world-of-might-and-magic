@@ -168,7 +168,6 @@ void IntegrityTest() {
     static_assert(sizeof(SpellBuff) == 0x10, "Wrong type size");
     static_assert(sizeof(AIDirection) == 0x1C, "Wrong type size");
     static_assert(sizeof(ActorJob) == 0xC, "Wrong type size");
-    static_assert(sizeof(LevelDecoration) == 0x20, "Wrong type size");
     static_assert(sizeof(BLVFaceExtra) == 0x24, "Wrong type size");
     static_assert(sizeof(BLVLightMM7) == 0x10, "Wrong type size");
     static_assert(sizeof(PlayerBuffAnim) == 0x10, "Wrong type size");
@@ -190,7 +189,6 @@ void IntegrityTest() {
     static_assert(sizeof(stru336) == 0x798, "Wrong type size");
     static_assert(sizeof(Vec3_short_) == 6, "Wrong type size");
     static_assert(sizeof(BLVFaceExtra) == 36, "Wrong type size");
-    static_assert(sizeof(LevelDecoration) == 32, "Wrong type size");
     static_assert(sizeof(BLVLightMM7) == 16, "Wrong type size");
     static_assert(sizeof(BSPNode) == 8, "Wrong type size");
     static_assert(sizeof(DDM_DLV_Header) == 40, "Wrong type size");

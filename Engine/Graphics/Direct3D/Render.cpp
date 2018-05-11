@@ -724,24 +724,21 @@ void Render::PrepareDecorationsRenderList_ODM() {
     char r;                 // ecx@20
     char g;                 // dl@20
     char b_;                // eax@20
-    Particle_sw local_0;    // [sp+Ch] [bp-98h]@7
     unsigned __int16 *v37;  // [sp+84h] [bp-20h]@9
     int v38;                // [sp+88h] [bp-1Ch]@9
 
-    for (unsigned int i = 0; i < uNumLevelDecorations; ++i) {
-        // LevelDecoration* decor = &pLevelDecorations[i];
-        if ((!(pLevelDecorations[i].uFlags & LEVEL_DECORATION_OBELISK_CHEST) ||
-             pLevelDecorations[i].IsObeliskChestActive()) &&
-            !(pLevelDecorations[i].uFlags & LEVEL_DECORATION_INVISIBLE)) {
-            DecorationDesc *decor_desc = pDecorationList->GetDecoration(pLevelDecorations[i].uDecorationDescID);
+    int i = 0;
+    for (LevelDecoration &decor : pLevelDecorations) {
+        if ((!(decor.uFlags & LEVEL_DECORATION_OBELISK_CHEST) ||
+            decor.IsObeliskChestActive()) &&
+            !(decor.uFlags & LEVEL_DECORATION_INVISIBLE)) {
+            DecorationDesc *decor_desc = decor.pDecorationDesc;
             if (!(decor_desc->uFlags & 0x80)) {
                 if (!(decor_desc->uFlags & 0x22)) {
                     v6 = pMiscTimer->uTotalGameTimeElapsed;
-                    v7 = abs(pLevelDecorations[i].vPosition.x +
-                             pLevelDecorations[i].vPosition.y);
+                    v7 = abs(decor.vPosition.x + decor.vPosition.y);
 
-                    frame = pSpriteFrameTable->GetFrame(decor_desc->uSpriteID,
-                                                        v6 + v7);
+                    frame = pSpriteFrameTable->GetFrame(decor_desc->uSpriteID, v6 + v7);
 
                     if (engine->config->seasons_change) {
                         frame = LevelDecorationChangeSeason(decor_desc, v6 + v7, pParty->uCurrentMonth);
@@ -754,20 +751,11 @@ void Render::PrepareDecorationsRenderList_ODM() {
                     // v8 = pSpriteFrameTable->GetFrame(decor_desc->uSpriteID,
                     // v6 + v7);
 
-                    v10 = (unsigned __int16 *)stru_5C6E00->Atan2(
-                        pLevelDecorations[i].vPosition.x -
-                            pIndoorCameraD3D->vPartyPos.x,
-                        pLevelDecorations[i].vPosition.y -
-                            pIndoorCameraD3D->vPartyPos.y);
+                    v10 = (uint16_t*)stru_5C6E00->Atan2(decor.vPosition.x - pIndoorCameraD3D->vPartyPos.x,
+                                                        decor.vPosition.y - pIndoorCameraD3D->vPartyPos.y);
                     v38 = 0;
-                    v13 = ((signed int)(stru_5C6E00->uIntegerPi +
-                                        ((signed int)stru_5C6E00->uIntegerPi >>
-                                         3) +
-                                        pLevelDecorations[i].field_10_y_rot -
-                                        (signed int)v10) >>
-                           8) &
-                          7;
-                    v37 = (unsigned __int16 *)v13;
+                    v13 = ((int)(stru_5C6E00->uIntegerPi + ((int)stru_5C6E00->uIntegerPi >> 3) + decor.field_10_y_rot - (int)v10) >> 8) & 7;
+                    v37 = (uint16_t*)v13;
                     if (frame->uFlags & 2) v38 = 2;
                     if ((256 << v13) & frame->uFlags) v38 |= 4;
                     if (frame->uFlags & 0x40000) v38 |= 0x40;
@@ -783,33 +771,27 @@ void Render::PrepareDecorationsRenderList_ODM() {
                             g = decor_desc->uColoredLightGreen;
                             b_ = decor_desc->uColoredLightBlue;
                         }
-                        pStationaryLightsStack->AddLight(
-                            pLevelDecorations[i].vPosition.x,
-                            pLevelDecorations[i].vPosition.y,
-                            pLevelDecorations[i].vPosition.z +
-                                decor_desc->uDecorationHeight / 2,
-                            frame->uGlowRadius, r, g, b_, _4E94D0_light_type);
+                        pStationaryLightsStack->AddLight(decor.vPosition.x,
+                                                         decor.vPosition.y,
+                                                         decor.vPosition.z + decor_desc->uDecorationHeight / 2,
+                                                         frame->uGlowRadius, r, g, b_, _4E94D0_light_type);
                     }  // for light
 
                     // v17 = (pLevelDecorations[i].vPosition.x -
                     // pIndoorCameraD3D->vPartyPos.x) << 16; v40 =
                     // (pLevelDecorations[i].vPosition.y -
                     // pIndoorCameraD3D->vPartyPos.y) << 16;
-                    int party_to_decor_x = pLevelDecorations[i].vPosition.x -
-                                           pIndoorCameraD3D->vPartyPos.x;
-                    int party_to_decor_y = pLevelDecorations[i].vPosition.y -
-                                           pIndoorCameraD3D->vPartyPos.y;
-                    int party_to_decor_z = pLevelDecorations[i].vPosition.z -
-                                           pIndoorCameraD3D->vPartyPos.z;
+                    int party_to_decor_x = decor.vPosition.x - pIndoorCameraD3D->vPartyPos.x;
+                    int party_to_decor_y = decor.vPosition.y - pIndoorCameraD3D->vPartyPos.y;
+                    int party_to_decor_z = decor.vPosition.z - pIndoorCameraD3D->vPartyPos.z;
 
                     int view_x = 0;
                     int view_y = 0;
                     int view_z = 0;
-                    bool visible = pIndoorCameraD3D->ViewClip(
-                        pLevelDecorations[i].vPosition.x,
-                        pLevelDecorations[i].vPosition.y,
-                        pLevelDecorations[i].vPosition.z, &view_x, &view_y,
-                        &view_z);
+                    bool visible = pIndoorCameraD3D->ViewClip(decor.vPosition.x,
+                                                              decor.vPosition.y,
+                                                              decor.vPosition.z,
+                                                              &view_x, &view_y, &view_z);
 
                     if (visible) {
                         // if (2 * abs(view_x) >= abs(view_y)) {
@@ -877,13 +859,12 @@ void Render::PrepareDecorationsRenderList_ODM() {
                     }
                 }
             } else {
-                memset(&local_0, 0, 0x68);
-                local_0.type = ParticleType_Bitmap | ParticleType_Rotating |
-                               ParticleType_8;
+                Particle_sw local_0 = { 0 };
+                local_0.type = ParticleType_Bitmap | ParticleType_Rotating | ParticleType_8;
                 local_0.uDiffuse = 0xFF3C1E;
-                local_0.x = (double)pLevelDecorations[i].vPosition.x;
-                local_0.y = (double)pLevelDecorations[i].vPosition.y;
-                local_0.z = (double)pLevelDecorations[i].vPosition.z;
+                local_0.x = (double)decor.vPosition.x;
+                local_0.y = (double)decor.vPosition.y;
+                local_0.z = (double)decor.vPosition.z;
                 local_0.r = 0.0;
                 local_0.g = 0.0;
                 local_0.b = 0.0;
@@ -893,6 +874,7 @@ void Render::PrepareDecorationsRenderList_ODM() {
                 particle_engine->AddParticle(&local_0);
             }
         }
+        i++;
     }
 }
 
@@ -4888,7 +4870,7 @@ void _46E0B2_collide_against_decorations() {
     for (unsigned int i = 0; i < sector->uNumDecorations; ++i) {
         LevelDecoration *decor = &pLevelDecorations[sector->pDecorationIDs[i]];
         if (!(decor->uFlags & LEVEL_DECORATION_INVISIBLE)) {
-            DecorationDesc *decor_desc = pDecorationList->GetDecoration(decor->uDecorationDescID);
+            DecorationDesc *decor_desc = decor->pDecorationDesc;
             if (!decor_desc->CanMoveThrough()) {
                 if (stru_721530.sMaxX <= decor->vPosition.x + decor_desc->uRadius &&
                     stru_721530.sMinX >= decor->vPosition.x - decor_desc->uRadius &&

@@ -305,8 +305,7 @@ int MapInfo::SpawnRandomTreasure(SpawnPointMM7 *a2) {
 }
 
 void TeleportToStartingPoint(MapStartPoint point) {
-    const char *model_name;  // [sp-4h] [bp-84h]@6
-    char pName[128];         // [sp+8h] [bp-78h]@11
+    String model_name;
 
     switch (point) {
         case MapStartPoint_Party:
@@ -328,10 +327,9 @@ void TeleportToStartingPoint(MapStartPoint point) {
             Error("Invalid enum value: %u", point);
     }
 
-    strcpy(pName, model_name);
-    if (pDecorationList->GetDecorIdByName(pName)) {
+    if (pDecorationList->GetDecorIdByName(model_name.c_str())) {
         for (LevelDecoration &decoration : pLevelDecorations) {
-            if (decoration.uDecorationDescID == pDecorationList->GetDecorIdByName(pName)) {
+            if (decoration.sDescName == model_name) {
                 pParty->vPosition.x = decoration.vPosition.x;
                 pParty->vPosition.y = decoration.vPosition.y;
                 pParty->vPosition.z = decoration.vPosition.z;
