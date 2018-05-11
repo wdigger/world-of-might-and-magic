@@ -837,8 +837,6 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
                           int respawn_interval_days, char *pDest) {
     decal_builder->Reset(0);
 
-    _6807E0_num_decorations_with_sounds_6807B8 = 0;
-
     if (bLoaded) {
         log->Warning(L"BLV is already loaded");
         return true;
@@ -2368,10 +2366,9 @@ void PrepareToLoadBLV(unsigned int bLoading) {
 
         if (decoration->uSoundID) {
             pAudioPlayer->PlaySound((SoundID)decoration->uSoundID, PID(OBJECT_Decoration, i), 1000000, 0, 0, 0);
-            _6807B8_level_decorations_ids[_6807E0_num_decorations_with_sounds_6807B8++] = i;
         }
 
-        if (!(pLevelDecorations[i].uFlags & LEVEL_DECORATION_INVISIBLE)) {
+        if (!(decor.uFlags & LEVEL_DECORATION_INVISIBLE)) {
             if (!decoration->DontDraw()) {
                 if (decoration->uLightRadius) {
                     unsigned char r = 255, g = 255, b = 255;
@@ -2380,22 +2377,22 @@ void PrepareToLoadBLV(unsigned int bLoading) {
                         g = decoration->uColoredLightGreen;
                         b = decoration->uColoredLightBlue;
                     }
-                    pStationaryLightsStack->AddLight(
-                        pLevelDecorations[i].vPosition.x,
-                        pLevelDecorations[i].vPosition.y,
-                        pLevelDecorations[i].vPosition.z + decoration->uDecorationHeight,
-                        decoration->uLightRadius, r, g, b, _4E94D0_light_type);
+                    pStationaryLightsStack->AddLight(decor.vPosition.x,
+                                                     decor.vPosition.y,
+                                                     decor.vPosition.z + decoration->uDecorationHeight,
+                                                     decoration->uLightRadius,
+                                                     r, g, b, _4E94D0_light_type);
                 }
             }
         }
 
-        if (!pLevelDecorations[i].uEventID) {
-            if (pLevelDecorations[i].IsInteractive()) {
+        if (!decor.uEventID) {
+            if (decor.IsInteractive()) {
                 if (v35 < 124) {
-                    pLevelDecorations[i]._idx_in_stru123 = v35 + 75;
-                    if (!stru_5E4C90_MapPersistVars._decor_events[v35])
-                        pLevelDecorations[i].uFlags |=
-                            LEVEL_DECORATION_INVISIBLE;
+                    decor._idx_in_stru123 = v35 + 75;
+                    if (!stru_5E4C90_MapPersistVars._decor_events[v35]) {
+                        decor.uFlags |= LEVEL_DECORATION_INVISIBLE;
+                    }
                     v35++;
                 }
             }

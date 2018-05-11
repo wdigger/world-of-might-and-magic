@@ -682,8 +682,6 @@ char *pHostileTXT_Raw;
 char *pPotionsTXT_Raw;
 char *pPotionNotesTXT_Raw;
 
-std::array<int, 777> _6807B8_level_decorations_ids;  // idb
-int _6807E0_num_decorations_with_sounds_6807B8;
 std::array<int, 3000> event_triggers;  // 6807E8
 size_t num_event_triggers;             // 6836C8
 std::array<int, 64> dword_69B010;

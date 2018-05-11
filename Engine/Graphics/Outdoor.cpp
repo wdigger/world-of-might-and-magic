@@ -986,8 +986,6 @@ bool OutdoorLocation::Load(const String &filename, int days_played,
         }
     }
 
-    _6807E0_num_decorations_with_sounds_6807B8 = 0;
-
     assert(sizeof(BSPModelData) == 188);
 
     if (!pGames_LOD->DoesContainerExist(filename)) {
@@ -1071,27 +1069,7 @@ bool OutdoorLocation::Load(const String &filename, int days_played,
     pGameLoadingUI_ProgressBar->Progress();  // прогресс загрузки
 
     // ******************Decorations**********************//
-    memcpy(&uNumLevelDecorations, pSrc, 4);
-    // uSourceLen = (char *)uSourceLen + 4;
-    if (uNumLevelDecorations > 3000) logger->Warning(L"Can't load file!");
-
-    assert(sizeof(LevelDecoration) == 32);
-    // pFilename = (char *)(32 * uNumLevelDecorations);
-    memcpy(pLevelDecorations.data(), pSrc + 4,
-           uNumLevelDecorations * sizeof(LevelDecoration));
-    pSrc += 4 + sizeof(LevelDecoration) * uNumLevelDecorations;
-
-    pGameLoadingUI_ProgressBar->Progress();
-
-    // v151 = 0;
-    // uSourceLen = (char *)uSourceLen + (int)pFilename;
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        char name[256];
-        memcpy(name, pSrc, sizeof(LevelDecoration));
-        pSrc += sizeof(LevelDecoration);
-        pLevelDecorations[i].uDecorationDescID =
-            pDecorationList->GetDecorIdByName(name);
-    }
+    pSrc = (uint8_t*)LevelDecorationsDeserialize((char*)pSrc);
 
     pGameLoadingUI_ProgressBar->Progress();  // прогресс загрузки
 
@@ -1161,7 +1139,7 @@ bool OutdoorLocation::Load(const String &filename, int days_played,
             if (ddm.uNumDecorations) {
                 if (ddm.uNumFacesInBModels != actualNumFacesInLevel ||
                     ddm.uNumBModels != pBModels.size() ||
-                    ddm.uNumDecorations != uNumLevelDecorations)
+                    ddm.uNumDecorations != pLevelDecorations.size())
                     Str2 = true;
             }
         }
@@ -1228,8 +1206,8 @@ bool OutdoorLocation::Load(const String &filename, int days_played,
 
     pGameLoadingUI_ProgressBar->Progress();  //прогресс загрузки
 
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        memcpy(&pLevelDecorations[i].uFlags, pSrc, 2);
+    for (LevelDecoration &Decoration: pLevelDecorations) {
+        memcpy(&Decoration.uFlags, pSrc, 2);
         pSrc += 2;
     }
 
@@ -1577,23 +1555,22 @@ bool OutdoorLocation::PrepareDecorations() {
         v8 = 1;
     }
 
-    for (uint i = 0; i < uNumLevelDecorations; ++i) {
-        LevelDecoration *decor = &pLevelDecorations[i];
-
-        pDecorationList->InitializeDecorationSprite(decor->uDecorationDescID);
-        DecorationDesc *decoration = pDecorationList->GetDecoration(decor->uDecorationDescID);
+    for (LevelDecoration &decor : pLevelDecorations) {
+        pDecorationList->InitializeDecorationSprite(decor.uDecorationDescID);
+        DecorationDesc *decoration = pDecorationList->GetDecoration(decor.uDecorationDescID);
         if (decoration->uSoundID) {
             pAudioPlayer->PlaySound((SoundID)decoration->uSoundID, PID(OBJECT_Decoration, i), 1000000, 0, 0, 0);
-            _6807B8_level_decorations_ids[_6807E0_num_decorations_with_sounds_6807B8++] = i;
         }
-        if (v8 && decor->uCog == 20)
-            decor->uFlags |= LEVEL_DECORATION_OBELISK_CHEST;
-        if (!decor->uEventID) {
-            if (decor->IsInteractive()) {
+        if (v8 && decor.uCog == 20) {
+            decor.uFlags |= LEVEL_DECORATION_OBELISK_CHEST;
+        }
+        if (!decor.uEventID) {
+            if (decor.IsInteractive()) {
                 if (v1 < 124) {
-                    decor->_idx_in_stru123 = v1 + 75;
-                    if (!stru_5E4C90_MapPersistVars._decor_events[v1++])
-                        decor->uFlags |= LEVEL_DECORATION_INVISIBLE;
+                    decor._idx_in_stru123 = v1 + 75;
+                    if (!stru_5E4C90_MapPersistVars._decor_events[v1++]) {
+                        decor.uFlags |= LEVEL_DECORATION_INVISIBLE;
+                    }
                 }
             }
         }
