@@ -10,7 +10,6 @@ std::vector<LevelDecoration> pLevelDecorations;
 LevelDecoration* activeLevelDecoration;
 
 int LevelDecoration::GetGlobalEvent() {
-/*
     switch (uDecorationDescID) {
         case 0:
         case 1:
@@ -288,7 +287,7 @@ int LevelDecoration::GetGlobalEvent() {
         default:
             Error("Invalid DecorationDescID: %u", uDecorationDescID);
     }
-*/
+
     return 0;
 }
 
@@ -328,7 +327,6 @@ bool LevelDecoration::IsObeliskChestActive() {
 
 //----- (0044C2F4) --------------------------------------------------------
 bool LevelDecoration::IsInteractive() {
-/*
     switch (uDecorationDescID) {
         case 4:    // trash pile
         case 5:    // campfire
@@ -348,7 +346,7 @@ bool LevelDecoration::IsInteractive() {
         return true;
     if (uDecorationDescID >= 210 && uDecorationDescID <= 221)  // magic pedestal
         return true;
-*/
+
     return false;
 }
 
@@ -391,7 +389,8 @@ char *LevelDecorationsDeserialize(char *pData) {
 }
 
 LevelDecoration::LevelDecoration(struct LevelDecoration_mm7 *pDecoration, const String &pDescName) {
-    pDecorationDesc = pDecorationList->GetDecoration(pDecorationList->GetDecorIdByName(pDescName.c_str()));
+    uDecorationDescID = pDecorationList->GetDecorIdByName(pDescName.c_str());
+    pDecorationDesc = pDecorationList->GetDecoration(uDecorationDescID);
     uFlags = pDecoration->uFlags;
     vPosition = pDecoration->vPosition;
     field_10_y_rot = pDecoration->field_10_y_rot;

@@ -22,6 +22,7 @@ struct LevelDecoration {
     bool IsInteractive();
     bool IsObeliskChestActive();
 
+    unsigned int uDecorationDescID;
     struct DecorationDesc *pDecorationDesc;
     uint16_t uFlags;
     Vec3_int_ vPosition;
