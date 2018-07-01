@@ -90,7 +90,7 @@ struct AcromageCardOnTable {
 };
 
 struct ArcomagePlayer {
-    char pPlayerName[32];
+    String pPlayerName;
     int IsHisTurn;
     int tower_height;
     int wall_height;
@@ -151,8 +151,8 @@ struct ArcomageGame {
     int event_timer_time;
     int uGameWinner;
     int Victory_type;
-    char pPlayer1Name[32];
-    char pPlayer2Name[32];
+    String pPlayer1Name;
+    String pPlayer2Name;
     char field_F4;
     char GameOver;
     char field_F6;

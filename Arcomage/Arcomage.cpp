@@ -18,6 +18,8 @@
 
 #include "Platform/Api.h"
 
+#include <sstream>
+
 void SetStartConditions();
 void SetStartGameData();
 void FillPlayerDeck();
@@ -59,7 +61,7 @@ void DrawRect(Rect *pXYZW, unsigned __int16 uColor, char bSolidFill);
 void DrawSquare(Point *pTargetXY, unsigned __int16 uColor);
 void DrawPixel(Point *pTargetXY, unsigned __int16 uColor);
 int rand_interval(int min, int max);  // idb
-void am_IntToString(int val, char *pOut);
+String am_IntToString(int val);
 
 //----- (0040DEDB) --------------------------------------------------------
 unsigned int R8G8B8_to_TargetFormat(int uColor) {
@@ -880,13 +882,13 @@ void SetStartGameData() {
     SetStartConditions();
     for (i = 0; i < 2; ++i) {
         if (i) {
-            strcpy(am_Players[1].pPlayerName, pArcomageGame->pPlayer2Name);
+            am_Players[1].pPlayerName = pArcomageGame->pPlayer2Name;
             if (byte_4E185C)
                 am_Players[1].IsHisTurn = 0;
             else
                 am_Players[1].IsHisTurn = 1;
         } else {
-            strcpy(am_Players[0].pPlayerName, pArcomageGame->pPlayer1Name);
+            am_Players[0].pPlayerName = pArcomageGame->pPlayer1Name;
             am_Players[0].IsHisTurn = 1;
         }
         am_Players[i].tower_height = start_tower_height;
@@ -1044,7 +1046,7 @@ void IncreaseResourcesInTurn(int player_num) {
 }
 
 void TurnChange() {
-    char player_name[64];    // [sp+4h] [bp-64h]@4
+    String player_name;    // [sp+4h] [bp-64h]@4
     ArcomageGame_stru1 v10;  // [sp+54h] [bp-14h]@7
     Point v11;               // [sp+60h] [bp-8h]@4
 
@@ -1057,7 +1059,7 @@ void TurnChange() {
             // nullsub_1();
             //   v11.x = 0;
             //   v11.y = 0;
-            strcpy(player_name, "The Next Player is: ");  //"След"
+            player_name = "The Next Player is: ";  //"След"
                                                             // v0 = 0;
             v11.y = 200;
             v11.x = 320;  // - 12 * v0 / 2;
@@ -1065,7 +1067,7 @@ void TurnChange() {
             am_byte_4FAA75 = 1;
             ++current_player_num;
             if (current_player_num >= 2) current_player_num = 0;
-            strcpy(player_name, am_Players[current_player_num].pPlayerName);
+            player_name = am_Players[current_player_num].pPlayerName;
             // v4 = 0;
             v11.y = 260;
             v11.x = 320;  // - 12 * v4 / 2;
@@ -1372,51 +1374,45 @@ void DrawRectanglesForText() {
 //----- (0040AC5F) --------------------------------------------------------
 void DrawPlayersText() {
     int res_value;        // ecx@18
-    char text_buff[32];   // [sp+Ch] [bp-28h]@2
+    String text_buff;   // [sp+Ch] [bp-28h]@2
     Point text_position;  // [sp+2Ch] [bp-8h]@2
 
     if (need_to_discard_card) {
-        strcpy(text_buff, localization->GetString(266));  // DISCARD A CARD
-        text_position.x =
-            320 - pArcomageGame->pfntArrus->GetLineWidth(text_buff) / 2;
+        text_buff = localization->GetString(266);  // DISCARD A CARD
+        text_position.x = 320 - pArcomageGame->pfntArrus->GetLineWidth(text_buff) / 2;
         text_position.y = 306;
         am_DrawText(text_buff, &text_position);
     }
-    strcpy(text_buff, am_Players[0].pPlayerName);
-    if (!current_player_num) strcat(text_buff, "***");
-    text_position.x =
-        47 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
+    text_buff = am_Players[0].pPlayerName;
+    if (!current_player_num) text_buff += "***";
+    text_position.x = 47 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 21;
     am_DrawText(text_buff, &text_position);
 
-    strcpy(text_buff, am_Players[1].pPlayerName);
-    if (current_player_num == 1) strcat(text_buff, "***");
+    text_buff = am_Players[1].pPlayerName;
+    if (current_player_num == 1) text_buff += "***";
     text_position.x =
         595 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 21;
     am_DrawText(text_buff, &text_position);
 
-    am_IntToString(am_Players[0].tower_height, text_buff);
-    text_position.x =
-        123 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
+    text_buff = am_IntToString(am_Players[0].tower_height);
+    text_position.x = 123 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 305;
     am_DrawText(text_buff, &text_position);
 
-    am_IntToString(am_Players[1].tower_height, text_buff);
-    text_position.x =
-        515 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
+    text_buff = am_IntToString(am_Players[1].tower_height);
+    text_position.x = 515 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 305;
     am_DrawText(text_buff, &text_position);
 
-    am_IntToString(am_Players[0].wall_height, text_buff);
-    text_position.x =
-        188 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
+    text_buff = am_IntToString(am_Players[0].wall_height);
+    text_position.x = 188 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 305;
     am_DrawText(text_buff, &text_position);
 
-    am_IntToString(am_Players[1].wall_height, text_buff);
-    text_position.x =
-        451 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
+    text_buff = am_IntToString(am_Players[1].wall_height);
+    text_position.x = 451 - pArcomageGame->pfntComic->GetLineWidth(text_buff) / 2;
     text_position.y = 305;
     am_DrawText(text_buff, &text_position);
 
@@ -2138,13 +2134,13 @@ void ApplyCardToPlayer(int player_num, unsigned int uCardID) {
 #define APPLY_TO_PLAYER(PLAYER, ENEMY, FIELD, VAL, RES)   \
     if (VAL != 0) {                                       \
         if (VAL == 99) {                                  \
-            if (PLAYER->##FIELD < ENEMY->##FIELD) {       \
-                PLAYER->##FIELD = ENEMY->##FIELD;         \
-                RES = ENEMY->##FIELD - PLAYER->##FIELD;   \
+            if (PLAYER -> FIELD < ENEMY -> FIELD) {       \
+                PLAYER -> FIELD = ENEMY -> FIELD;         \
+                RES = ENEMY -> FIELD - PLAYER -> FIELD;   \
             }                                             \
         } else {                                          \
-            PLAYER->##FIELD += (signed int)(VAL);         \
-            if (PLAYER->##FIELD < 0) PLAYER->##FIELD = 0; \
+            PLAYER -> FIELD += (signed int)(VAL);         \
+            if (PLAYER -> FIELD < 0) PLAYER -> FIELD = 0; \
             RES = (signed int)(VAL);                      \
         }                                                 \
     }
@@ -2155,23 +2151,23 @@ void ApplyCardToPlayer(int player_num, unsigned int uCardID) {
 #define APPLY_TO_BOTH(PLAYER, ENEMY, FIELD, VAL, RES_P, RES_E) \
     if (VAL != 0) {                                            \
         if (VAL == 99) {                                       \
-            if (PLAYER->##FIELD != ENEMY->##FIELD) {           \
-                if (PLAYER->##FIELD <= ENEMY->##FIELD) {       \
-                    PLAYER->##FIELD = ENEMY->##FIELD;          \
-                    RES_P = ENEMY->##FIELD - PLAYER->##FIELD;  \
+            if (PLAYER->FIELD != ENEMY->FIELD) {           \
+                if (PLAYER->FIELD <= ENEMY->FIELD) {       \
+                    PLAYER->FIELD = ENEMY->FIELD;          \
+                    RES_P = ENEMY->FIELD - PLAYER->FIELD;  \
                 } else {                                       \
-                    ENEMY->##FIELD = PLAYER->##FIELD;          \
-                    RES_E = PLAYER->##FIELD - ENEMY->##FIELD;  \
+                    ENEMY->FIELD = PLAYER->FIELD;          \
+                    RES_E = PLAYER->FIELD - ENEMY->FIELD;  \
                 }                                              \
             }                                                  \
         } else {                                               \
-            PLAYER->##FIELD += (signed int)(VAL);              \
-            ENEMY->##FIELD += (signed int)(VAL);               \
-            if (PLAYER->##FIELD < 0) {                         \
-                PLAYER->##FIELD = 0;                           \
+            PLAYER->FIELD += (signed int)(VAL);              \
+            ENEMY->FIELD += (signed int)(VAL);               \
+            if (PLAYER->FIELD < 0) {                         \
+                PLAYER->FIELD = 0;                           \
             }                                                  \
-            if (ENEMY->##FIELD < 0) {                          \
-                ENEMY->##FIELD = 0;                            \
+            if (ENEMY->FIELD < 0) {                          \
+                ENEMY->FIELD = 0;                            \
             }                                                  \
             RES_P = (signed int)(VAL);                         \
             RES_E = (signed int)(VAL);                         \
@@ -2947,13 +2943,12 @@ void GameResultsApply() {
 void ArcomageGame::PrepareArcomage() {
     int v2;      // esi@4
     int v3;      // esi@5
-    // int v4;      // edi@5
     Rect pXYZW;  // [sp+8h] [bp-1Ch]@5
     Point pXY;   // [sp+18h] [bp-Ch]@5
 
     pAudioPlayer->StopChannels(-1, -1);
-    strcpy_s(pArcomageGame->pPlayer1Name, Player1Name);
-    strcpy_s(pArcomageGame->pPlayer2Name, Player2Name);
+    pArcomageGame->pPlayer1Name = Player1Name;
+    pArcomageGame->pPlayer2Name = Player2Name;
     am_byte_4FAA76 = 0;
     am_byte_4FAA75 = 0;
 
@@ -3081,7 +3076,11 @@ void DrawPixel(Point *pTargetXY, unsigned __int16 uColor) {
 
 int rand_interval(int min, int max) { return min + rand() % (max - min + 1); }
 
-void am_IntToString(int val, char *pOut) { sprintf(pOut, "%d", val); }
+String am_IntToString(int val) {
+  std::stringstream ss;
+  ss << val;
+  return ss.str();
+}
 
 void set_stru1_field_8_InArcomage(int inValue) {
     switch (inValue) {
