@@ -20,6 +20,7 @@
 
 #include "Engine/Objects/Actor.h"
 #include "Engine/Objects/Chest.h"
+#include "Engine/Objects/ControllerChest.h"
 #include "Engine/Objects/SpriteObject.h"
 
 #include "IO/Mouse.h"
@@ -883,8 +884,8 @@ LABEL_47:
                     ++curr_seq_num;
                     break;
                 case EVENT_ToggleChestFlag:
-                    Chest::ToggleFlag(EVT_DWORD(_evt->v5), EVT_DWORD(_evt->v9),
-                                      _evt->v13);
+                    Chests::ToggleFlag(EVT_DWORD(_evt->v5), EVT_DWORD(_evt->v9),
+                                       _evt->v13);
                     ++curr_seq_num;
                     break;
                 case EVENT_ToggleActorFlag:
@@ -967,7 +968,7 @@ LABEL_47:
                     ++curr_seq_num;
                     break;
                 case EVENT_OpenChest:
-                    if (!Chest::Open(_evt->v5)) {
+                    if (!ChestUI::Open(_evt->v5)) {
                         if (v133 == 1) OnMapLeave();
                         return;
                     }

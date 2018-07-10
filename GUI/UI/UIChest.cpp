@@ -47,30 +47,29 @@ void GUIWindow_Chest::Update() {
 
         int *v16 = render->pActiveZBuffer;
         render->ClearZBuffer(0, 479);
-        int chestBitmapId = vChests[uChestID].uChestBitmapID;
+        int chestBitmapId = Chests::GetBitmapID(uChestID);
         int chest_offs_x = pChestPixelOffsetX[chestBitmapId];
         int chest_offs_y = pChestPixelOffsetY[chestBitmapId];
         int chestWidthCells = pChestWidthsByType[chestBitmapId];
         int chestHeghtCells = pChestHeightsByType[chestBitmapId];
 
         Image *chest_background = assets->GetImage_ColorKey(
-            StringPrintf("chest%02d", pChestList->vChests[chestBitmapId].uTextureID), 0x7FF);
+            StringPrintf("chest%02d", Chests::pChestList->vChests[chestBitmapId].uTextureID), 0x7FF);
         render->DrawTextureAlphaNew(8 / 640.0f, 8 / 480.0f, chest_background);
 
-        for (int item_counter = 0;
-             item_counter < chestWidthCells * chestHeghtCells; ++item_counter) {
-            int chest_item_index = vChests[uChestID].pInventoryIndices[item_counter];
+        for (int item_counter = 0; item_counter < chestWidthCells * chestHeghtCells; ++item_counter) {
+            int chest_item_index = Chests::vChests[uChestID].GetInventoryIndex(item_counter);
             if (chest_item_index > 0) {
                 auto item_texture = assets->GetImage_ColorKey(
-                    vChests[uChestID].igChestItems[chest_item_index - 1].GetIconName(),
+                    Chests::vChests[uChestID].GetItem(chest_item_index - 1)->GetIconName(),
                     0x7FF);
 
                 int itemPixelWidth = item_texture->GetWidth();
                 int itemPixelHeght = item_texture->GetHeight();
                 if (itemPixelWidth < 14) itemPixelWidth = 14;
                 if (itemPixelHeght < 14) itemPixelHeght = 14;
-                signed int X_offset = ((signed int((itemPixelWidth - 14) & 0xFFFFFFE0) + 32) - itemPixelWidth) / 2;
-                signed int Y_offset = ((signed int((itemPixelHeght - 14) & 0xFFFFFFE0) + 32) - itemPixelHeght) / 2;
+                int X_offset = ((int((itemPixelWidth - 14) & 0xFFFFFFE0) + 32) - itemPixelWidth) / 2;
+                int Y_offset = ((int((itemPixelHeght - 14) & 0xFFFFFFE0) + 32) - itemPixelHeght) / 2;
                 int itemPixelPosX = chest_offs_x + 32 * (item_counter % chestWidthCells) + X_offset;
                 int itemPixelPosY = chest_offs_y + 32 * (item_counter / chestHeghtCells) + Y_offset;
                 render->DrawTextureAlphaNew(itemPixelPosX / 640.0f,

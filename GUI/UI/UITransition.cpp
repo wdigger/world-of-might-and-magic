@@ -1,8 +1,3 @@
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#include <stdlib.h>
-
-#define _CRT_SECURE_NO_WARNINGS
 #include <io.h>
 
 #include "Engine/Engine.h"
@@ -17,11 +12,11 @@
 #include "Engine/Graphics/Outdoor.h"
 
 #include "GUI/GUIButton.h"
-#include "GUI/UI/UITransition.h"
 #include "GUI/GUIFont.h"
 #include "GUI/GUIProgressBar.h"
 #include "GUI/UI/UIGame.h"
 #include "GUI/UI/UIHouses.h"
+#include "GUI/UI/UITransition.h"
 
 #include "Media/Audio/AudioPlayer.h"
 #include "Media/MediaPlayer.h"

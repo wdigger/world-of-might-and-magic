@@ -19,6 +19,7 @@
 
 #include "Engine/Objects/Actor.h"
 #include "Engine/Objects/Chest.h"
+#include "Engine/Objects/ControllerChest.h"
 #include "Engine/Objects/ObjectList.h"
 #include "Engine/Objects/SpriteObject.h"
 
@@ -2277,7 +2278,7 @@ void Game::EventLoop() {
                         pPlayers[uActiveCharacter]->OnInventoryLeftClick();
                         continue;
                     }
-                    Chest::OnChestLeftClick();
+                    ChestUI::OnChestLeftClick();
                     continue;
                 case UIMSG_InventoryLeftClick:
                     pPlayers[uActiveCharacter]->OnInventoryLeftClick();
@@ -2307,7 +2308,7 @@ void Game::EventLoop() {
                     pMessageQueue_50CBD0->Flush();
                     // if currently in a chest
                     if (current_screen_type == SCREEN_CHEST) {
-                        Chest::GrabItem(OS_IfCtrlPressed());
+                        ChestUI::GrabItem(OS_IfCtrlPressed());
                     } else {
                         OnPressSpace();
                     }

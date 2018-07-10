@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 set(OBJECTS_SOURCES Actor.cpp
                     Chest.cpp
+                    ControllerChest.cpp
                     Items.cpp
                     Monsters.cpp
                     NPC.cpp
@@ -11,6 +12,7 @@ set(OBJECTS_SOURCES Actor.cpp
 
 set(OBJECTS_HEADERS Actor.h
                     Chest.h
+                    ControllerChest.h
                     Items.h
                     Monsters.h
                     NPC.h

@@ -1173,7 +1173,7 @@ bool IndoorLocation::Load(const String &filename, int num_days_played,
 
     pGameLoadingUI_ProgressBar->Progress();
 
-    pData = ChestsDeserialize(pData);
+    pData = Chests::Deserialize(pData);
 
     pGameLoadingUI_ProgressBar->Progress();
     pGameLoadingUI_ProgressBar->Progress();

@@ -30,43 +30,53 @@ class ChestList {
     std::vector<ChestDesc> vChests;
 };
 
-/*   65 */
-#pragma pack(push, 1)
-struct Chest {  // 0x14cc
-    inline bool Initialized() const {
-        return (uFlags & CHEST_ITEMS_PLACED) != 0;
-    }
-    inline void SetInitialized(bool b) {
+class Chest {
+  public:
+    void ToggleFlag(uint16_t uFlag, unsigned int bToggle);
+    bool Trapped() const { return (uFlags & CHEST_TRAPPED) != 0; }
+    bool Open();
+    int ItemsCount() const;
+    bool CanPlaceItemAt(int test_cell_position, int item_id) const;
+    unsigned int GetBitmapID() const { return uChestBitmapID; }
+    int GetInventoryIndex(unsigned int pos) const { return pInventoryIndices[pos]; }
+    struct ItemGen *GetItem(unsigned int pos) { return &igChestItems[pos]; }
+    int PutItemInChest(int position, ItemGen *put_item);
+    void RemoveItemAt(unsigned int pos);
+    void GenerateItems(MapInfo *pMapInfo);
+
+    void Serialize(void *pData);
+    void Deserialize(void *pData);
+
+  protected:
+    bool Initialized() const { return (uFlags & CHEST_ITEMS_PLACED) != 0; }
+    void SetInitialized(bool b) {
         if (b)
             uFlags |= CHEST_ITEMS_PLACED;
         else
             uFlags &= ~CHEST_ITEMS_PLACED;
     }
-    inline bool Trapped() const { return (uFlags & CHEST_TRAPPED) != 0; }
 
-    static bool CanPlaceItemAt(int a1, int a2, int uChestID);
-    static int CountChestItems(int uChestID);
-    static int PutItemInChest(int a1, struct ItemGen *a2, int uChestID);
-    static void PlaceItemAt(unsigned int put_cell_pos, unsigned int uItemIdx, int uChestID);
-    static void PlaceItems(int uChestID);
-    static bool Open(int uChestID);
-    static void ToggleFlag(int uChestID, uint16_t uFlag, unsigned int bToggle);
-    static bool ChestUI_WritePointedObjectStatusString();
-    static void OnChestLeftClick();
-    static void GrabItem(bool all = false);
+    void PlaceItemAt(unsigned int put_cell_pos, unsigned int uItemIdx);
+    void PlaceItems();
 
-    uint16_t uChestBitmapID;        // 0
-    uint16_t uFlags;                // 2
-    struct ItemGen igChestItems[140];       // 4
-    int16_t pInventoryIndices[140];  // 0x13b4 why is this a short?
+    unsigned int uFlags;
+    unsigned int uChestBitmapID;
+    struct ItemGen igChestItems[140];
+    int pInventoryIndices[140];
 };
-#pragma pack(pop)
 
-void RemoveItemAtChestIndex(int index);
-void GenerateItemsInChest();
+class Chests {
+  public:
+    static bool CanPlaceItemAt(int test_cell_position, int item_id, int uChestID);
+    static int CountChestItems(int uChestID);
+    static int PutItemInChest(int position, ItemGen *put_item, int uChestID);
+    static void ToggleFlag(int uChestID, uint16_t uFlag, unsigned int bToggle);
+    static void GenerateItemsInChest();
+    static unsigned int GetBitmapID(int uChestID);
 
-char *ChestsSerialize(char *pData);
-char *ChestsDeserialize(char *pData);
+    static char *Serialize(char *pData);
+    static char *Deserialize(char *pData);
 
-extern ChestList *pChestList;
-extern std::vector<Chest> vChests;
+    static ChestList *pChestList;
+    static std::vector<Chest> vChests;
+};

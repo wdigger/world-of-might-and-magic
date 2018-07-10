@@ -13,13 +13,13 @@
 
 #include "Engine/Graphics/DecalBuilder.h"
 #include "Engine/Graphics/DecorationList.h"
-#include "Engine/Graphics/Indoor.h"
 #include "Engine/Graphics/IRender.h"
+#include "Engine/Graphics/Indoor.h"
 #include "Engine/Graphics/LightmapBuilder.h"
 #include "Engine/Graphics/Lights.h"
 #include "Engine/Graphics/Overlays.h"
-#include "Engine/Graphics/ParticleEngine.h"
 #include "Engine/Graphics/PaletteManager.h"
+#include "Engine/Graphics/ParticleEngine.h"
 #include "Engine/Graphics/Viewport.h"
 #include "Engine/Graphics/Vis.h"
 
@@ -38,8 +38,8 @@
 #include "Engine/Tables/PlayerFrameTable.h"
 #include "Engine/Tables/StorylineTextTable.h"
 
-#include "IO/Mouse.h"
 #include "IO/Keyboard.h"
+#include "IO/Mouse.h"
 
 
 using Engine_::IocContainer;
@@ -164,7 +164,6 @@ void IntegrityTest() {
     static_assert(sizeof(OtherOverlay) == 0x14, "Wrong type size");
     static_assert(sizeof(ItemGen) == 0x24, "Wrong type size");
     static_assert(sizeof(SpriteObject) == 0x70, "Wrong type size");
-    static_assert(sizeof(Chest) == 0x14CC, "Wrong type size");
     static_assert(sizeof(SpellData) == 0x14, "Wrong type size");
     static_assert(sizeof(SpellBuff) == 0x10, "Wrong type size");
     static_assert(sizeof(AIDirection) == 0x1C, "Wrong type size");
@@ -196,7 +195,6 @@ void IntegrityTest() {
     static_assert(sizeof(BSPNode) == 8, "Wrong type size");
     static_assert(sizeof(DDM_DLV_Header) == 40, "Wrong type size");
     static_assert(sizeof(SpriteObject) == 112, "Wrong type size");
-    static_assert(sizeof(Chest) == 5324, "Wrong type size");
     static_assert(sizeof(stru123) == 0xC8, "Wrong type size");
     static_assert(sizeof(BLVMapOutline) == 12, "Wrong type size");
 }

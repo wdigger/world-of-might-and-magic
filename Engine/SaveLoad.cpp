@@ -413,7 +413,7 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
                    112 * uNumSpriteObjects);
             data_write_pos += 112 * uNumSpriteObjects;
 
-            data_write_pos = ChestsSerialize(data_write_pos);
+            data_write_pos = Chests::Serialize(data_write_pos);
 
             memcpy(data_write_pos, pIndoor->pDoors, sizeof(BLVDoor) * 200);
             data_write_pos += 16000;
@@ -461,7 +461,7 @@ void SaveGame(bool IsAutoSAve, bool NotSaveWorld) {
                    uNumSpriteObjects * sizeof(SpriteObject));
             data_write_pos += uNumSpriteObjects * sizeof(SpriteObject);
 
-            data_write_pos = ChestsSerialize(data_write_pos);
+            data_write_pos = Chests::Serialize(data_write_pos);
 
             memcpy(data_write_pos, &stru_5E4C90_MapPersistVars, 0xC8);
             data_write_pos += 200;

@@ -1019,8 +1019,8 @@ bool Engine::MM7_Initialize(const std::string &mm7_path) {
                                : nullptr,
              *chests_mm8 = nullptr;
         void *chests_mm7 = pEvents_LOD->LoadCompressedTexture("dchest.bin");
-        pChestList = new ChestList;
-        pChestList->FromFile(chests_mm6, chests_mm7, chests_mm8);
+        Chests::pChestList = new ChestList;
+        Chests::pChestList->FromFile(chests_mm6, chests_mm7, chests_mm8);
         free(chests_mm6);
         free(chests_mm7);
         free(chests_mm8);
@@ -1348,7 +1348,7 @@ void Engine::_461103_load_level_sub() {
     if (engine->config->no_actors)
         uNumActors = 0;
 
-    GenerateItemsInChest();
+    Chests::GenerateItemsInChest();
     pGameLoadingUI_ProgressBar->Progress();
     pParty->uFlags |= 2;
     pParty->field_7B5_in_arena_quest = 0;

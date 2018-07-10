@@ -31,6 +31,7 @@
 
 #include "Engine/Objects/Actor.h"
 #include "Engine/Objects/Chest.h"
+#include "Engine/Objects/ControllerChest.h"
 #include "Engine/Objects/ObjectList.h"
 #include "Engine/Objects/SpriteObject.h"
 
@@ -1408,7 +1409,7 @@ void GameUI_WritePointedObjectStatusString() {
     } else if (current_screen_type == SCREEN_CHEST) {
         if (pX <= (window->GetWidth() - 1) * 0.73125 &&
             pY <= (window->GetHeight() - 1) * 0.73125) {  // if in chest area
-            if (Chest::ChestUI_WritePointedObjectStatusString()) {
+            if (ChestUI::WritePointedObjectStatusString()) {
                 return;
             } else if (uLastPointedObjectID != 0) {  // not found so reset
                 game_ui_status_bar_string.clear();

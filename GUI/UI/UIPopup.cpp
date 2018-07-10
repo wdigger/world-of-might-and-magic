@@ -1493,8 +1493,7 @@ void UI_OnMouseRightClick(int mouse_x, int mouse_y) {
                 static String hint_reference;
                 hint_reference = localization->FormatString(
                     427, pPlayers[uActiveCharacter]->pName,
-                    localization->GetString(
-                        541));  // %s не в состоянии %s Опознать предметы
+                    localization->GetString(541));  // %s не в состоянии %s Опознать предметы
 
                 popup_window.sHint = hint_reference;
                 popup_window.uFrameWidth = 384;
@@ -1508,26 +1507,24 @@ void UI_OnMouseRightClick(int mouse_x, int mouse_y) {
             } else {
                 // this could be put into a chest function
 
-                int chestheight =
-                    9;  // pChestHeightsByType[pChests[(int)pGUIWindow_CurrentMenu->par1C].uChestBitmapID];
+                int chestheight = 9;  // pChestHeightsByType[pChests[(int)pGUIWindow_CurrentMenu->par1C].uChestBitmapID];
                 int chestwidth = 9;
                 int inventoryYCoord = (pY - 34) / 32;  // use pchestoffsets??
                 int inventoryXCoord = (pX - 42) / 32;
-                int invMatrixIndex =
-                    inventoryXCoord + (chestheight * inventoryYCoord);
+                int invMatrixIndex = inventoryXCoord + (chestheight * inventoryYCoord);
 
                 if (inventoryYCoord >= 0 && inventoryYCoord < chestheight &&
                     inventoryXCoord >= 0 && inventoryXCoord < chestwidth) {
-                    int chestindex = vChests[(int)pGUIWindow_CurrentMenu->par1C].pInventoryIndices[invMatrixIndex];
+                    int chestindex = Chests::vChests[(int)pGUIWindow_CurrentMenu->par1C].GetInventoryIndex(invMatrixIndex);
                     if (chestindex < 0) {
                         invMatrixIndex = (-(chestindex + 1));
-                        chestindex = vChests[(int)pGUIWindow_CurrentMenu->par1C].pInventoryIndices[invMatrixIndex];
+                        chestindex = Chests::vChests[(int)pGUIWindow_CurrentMenu->par1C].GetInventoryIndex(invMatrixIndex);
                     }
 
                     if (chestindex) {
                         int itemindex = chestindex - 1;
 
-                        GameUI_DrawItemInfo(&vChests[pChestWindow->par1C].igChestItems[itemindex]);
+                        GameUI_DrawItemInfo(Chests::vChests[pChestWindow->par1C].GetItem(itemindex));
                     }
                 }
             }
