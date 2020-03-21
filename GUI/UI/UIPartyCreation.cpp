@@ -94,8 +94,7 @@ void CreateParty_EventLoop() {
             } while (pParty->pPlayers[param].GetSexByVoice() != sex);
             auto pButton = pCreationUI_BtnPressLeft2[param];
 
-            new OnButtonClick(pButton->uX, pButton->uY, 0, 0, (int)pButton,
-                String(), false);
+            new OnButtonClick(pButton->uX, pButton->uY, 0, 0, pButton, String(), false);
             pAudioPlayer->PlaySound(SOUND_SelectingANewCharacter, 0, 0, -1, 0, 0);
             pParty->pPlayers[param].PlaySound(SPEECH_PickMe, 0);
             break;
@@ -108,8 +107,7 @@ void CreateParty_EventLoop() {
                     (pParty->pPlayers[param].uVoiceID + 1) % 20;
             } while (pParty->pPlayers[param].GetSexByVoice() != sex);
             auto pButton = pCreationUI_BtnPressRight2[param];
-            new OnButtonClick(pButton->uX, pButton->uY, 0, 0, (int)pButton,
-                String(), false);
+            new OnButtonClick(pButton->uX, pButton->uY, 0, 0, pButton, String(), false);
             pAudioPlayer->PlaySound(SOUND_SelectingANewCharacter, 0, 0, -1, 0, 0);
             pParty->pPlayers[param].PlaySound(SPEECH_PickMe, 0);
             break;
@@ -133,7 +131,7 @@ void CreateParty_EventLoop() {
             uPlayerCreationUI_SelectedCharacter = param;
             new OnButtonClick(pCreationUI_BtnPressLeft[param]->uX,
                 pCreationUI_BtnPressLeft[param]->uY, 0, 0,
-                (int)pCreationUI_BtnPressLeft[param],
+                pCreationUI_BtnPressLeft[param],
                 String(), false);
             pAudioPlayer->PlaySound(SOUND_SelectingANewCharacter, 0, 0, -1, 0, 0);
             pParty->pPlayers[param].PlaySound(SPEECH_PickMe, 0);
@@ -156,14 +154,14 @@ void CreateParty_EventLoop() {
             uPlayerCreationUI_SelectedCharacter = param;
             new OnButtonClick(pCreationUI_BtnPressRight[param]->uX,
                 pCreationUI_BtnPressRight[param]->uY, 0, 0,
-                (int)pCreationUI_BtnPressRight[param],
+                pCreationUI_BtnPressRight[param],
                 String(), false);
             pAudioPlayer->PlaySound(SOUND_SelectingANewCharacter, 0, 0, -1, 0, 0);
             pParty->pPlayers[param].PlaySound(SPEECH_PickMe, 0);
             break;
         case UIMSG_PlayerCreationClickPlus:
             new OnButtonClick2(613, 393, 0, 0,
-                (int)pPlayerCreationUI_BtnPlus, String(),
+                pPlayerCreationUI_BtnPlus, String(),
                 false);
             pPlayer[uPlayerCreationUI_SelectedCharacter].IncreaseAttribute(
                 (pGUIWindow_CurrentMenu->pCurrentPosActiveItem -
@@ -173,7 +171,7 @@ void CreateParty_EventLoop() {
             break;
         case UIMSG_PlayerCreationClickMinus:
             new OnButtonClick2(523, 393, 0, 0,
-                (int)pPlayerCreationUI_BtnMinus, String(),
+                pPlayerCreationUI_BtnMinus, String(),
                 false);
             pPlayer[uPlayerCreationUI_SelectedCharacter].DecreaseAttribute(
                 (pGUIWindow_CurrentMenu->pCurrentPosActiveItem -
@@ -197,7 +195,7 @@ void CreateParty_EventLoop() {
             break;
         case UIMSG_PlayerCreationClickOK:
             new OnButtonClick2(580, 431, 0, 0,
-                (int)pPlayerCreationUI_BtnOK);
+                pPlayerCreationUI_BtnOK);
             if (PlayerCreation_GetUnspentAttributePointCount() ||
                 !PlayerCreation_Choose4Skills())
                 game_ui_status_bar_event_string_time_left =
@@ -206,8 +204,7 @@ void CreateParty_EventLoop() {
                 uGameState = GAME_STATE_STARTING_NEW_GAME;
             break;
         case UIMSG_PlayerCreationClickReset:
-            new OnButtonClick2(527, 431, 0, 0,
-                (int)pPlayerCreationUI_BtnReset);
+            new OnButtonClick2(527, 431, 0, 0, pPlayerCreationUI_BtnReset);
             pParty->Reset();
             break;
         case UIMSG_PlayerCreationRemoveUpSkill:
@@ -244,7 +241,7 @@ void CreateParty_EventLoop() {
             pAudioPlayer->PlaySound(SOUND_ClickSkill, 0, 0, -1, 0, 0);
             uPlayerCreationUI_SelectedCharacter = param;
             pKeyActionMap->EnterText(0, 15, pGUIWindow_CurrentMenu);
-            pGUIWindow_CurrentMenu->ptr_1C = (void *)param;
+            pGUIWindow_CurrentMenu->buttonId = param;
             break;
         case UIMSG_Escape:
             if (pModalWindow) {
@@ -409,16 +406,15 @@ void GUIWindow_PartyCreation::Update() {
 
         if (pGUIWindow_CurrentMenu->receives_keyboard_input_2 !=
             WINDOW_INPUT_NONE &&
-            pGUIWindow_CurrentMenu->ptr_1C == (void *)i) {
+            pGUIWindow_CurrentMenu->buttonId == i) {
             switch (pGUIWindow_CurrentMenu->receives_keyboard_input_2) {
             case WINDOW_INPUT_IN_PROGRESS:  // press name panel
                 v17 = pGUIWindow_CurrentMenu->DrawTextInRect(
                     pFontCreate,
-                    159 * (int)pGUIWindow_CurrentMenu->ptr_1C + 18, 124, 0,
+                    159 * pGUIWindow_CurrentMenu->buttonId + 18, 124, 0,
                     pKeyActionMap->pPressedKeysBuffer, 120, 1);
                 pGUIWindow_CurrentMenu->DrawFlashingInputCursor(
-                    159 * (unsigned int)pGUIWindow_CurrentMenu->ptr_1C +
-                    v17 + 20,
+                    159 * (unsigned int)pGUIWindow_CurrentMenu->buttonId + v17 + 20,
                     124, pFontCreate);
                 break;
             case WINDOW_INPUT_CONFIRMED:  // press enter

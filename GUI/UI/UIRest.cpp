@@ -43,8 +43,7 @@ void GUIWindow_RestWindow::Update() {
     GUIButton2.uHeight = 37;
     GUIButton2.pParent = pButton_RestUI_WaitUntilDawn->pParent;
     pAudioPlayer->PlaySound(SOUND_StartMainChoice02, 0, 0, -1, 0, 0);
-    render->DrawTextureAlphaNew(uFrameX / 640.0f, uFrameY / 480.0f,
-                                *((Image **)ptr_1C + 15));
+    render->DrawTextureAlphaNew(uFrameX / 640.0f, uFrameY / 480.0f, *((Image **)ptr_1C + 15));
     viewparams->bRedrawGameUI = 1;
     GUIButton2.DrawLabel(localization->GetString(183), pFontCreate, 0,
                          0);  // Rest & Heal 8 hrs / Отдых и лечение 8 часов
@@ -61,7 +60,7 @@ void PrepareToLoadRestUI() {
     }
     pEventTimer->Pause();
     if (_506F14_resting_stage != 2)
-        new OnButtonClick2(518, 450, 0, 0, (int)pBtn_Rest);
+        new OnButtonClick2(518, 450, 0, 0, pBtn_Rest);
     _506F18_num_minutes_to_sleep = 0;
     _506F14_resting_stage = 0;
     uRestUI_FoodRequiredToRest = 2;
@@ -154,7 +153,7 @@ void GUIWindow_Rest::Update() {
             _507CD4_RestUI_hourglass_anim_controller = 0;
         }
         hourglass_icon_idx =
-            (int)floorf(((double)v3 / 512.0 * 120.0) + 0.5f) % 256 + 1;
+            (int)floorf(((float)v3 / 512.f * 120.f) + 0.5f) % 256 + 1;
         if (hourglass_icon_idx >= 120) hourglass_icon_idx = 1;
 
         {
@@ -223,7 +222,7 @@ void GUIWindow_Rest::Update() {
         if (_506F14_resting_stage) Party::Sleep8Hours();
     } else {
         new OnCancel(pButton_RestUI_Exit->uX, pButton_RestUI_Exit->uY, 0, 0,
-            (int)pButton_RestUI_Exit,
+            pButton_RestUI_Exit,
             localization->GetString(81));  // "Exit Rest"
     }
 }

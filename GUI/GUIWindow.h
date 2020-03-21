@@ -353,8 +353,9 @@ class GUIButton;
 class GUIWindow {
  public:
     GUIWindow();
-    GUIWindow(unsigned int uX, unsigned int uY, unsigned int uWidth, unsigned int uHeight, int pButton, const String &hint = String());
-    virtual ~GUIWindow() {}
+    GUIWindow(unsigned int uX, unsigned int uY, unsigned int uWidth, unsigned int uHeight, GUIButton *pButton, const String &hint = String());
+	GUIWindow(unsigned int uX, unsigned int uY, unsigned int uWidth, unsigned int uHeight, int iButtonId, const String& hint = String());
+	virtual ~GUIWindow() {}
 
     GUIButton *CreateButton(int x, int y, int width, int height, int a6, int a7,
     UIMessageType msg, unsigned int msg_param, uint8_t hotkey, const String &label,
@@ -392,10 +393,8 @@ class GUIWindow {
     unsigned int uFrameZ;
     unsigned int uFrameW;
     WindowType eWindowType;
-    union {
-        void *ptr_1C;  // sometimes BuildID_2Events - book open
-        unsigned int par1C;
-    };
+	GUIButton *m_pButton;
+	int buttonId;
     int field_24;
     int pNumPresenceButton;
     int pCurrentPosActiveItem;
@@ -413,8 +412,8 @@ class GUIWindow {
 
 class GUIWindow_Scroll : public GUIWindow {
  public:
-    GUIWindow_Scroll(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint) {
+    GUIWindow_Scroll(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int iButtonId, const String &hint = String()) :
+        GUIWindow(x, y, width, height, iButtonId, hint) {
         CreateButton(61, 424, 31, 0, 2, 94, UIMSG_SelectCharacter, 1, '1', "");
         CreateButton(177, 424, 31, 0, 2, 94, UIMSG_SelectCharacter, 2, '2', "");
         CreateButton(292, 424, 31, 0, 2, 94, UIMSG_SelectCharacter, 3, '3', "");
@@ -428,8 +427,8 @@ class GUIWindow_Scroll : public GUIWindow {
 
 class OnButtonClick : public GUIWindow {
  public:
-    OnButtonClick(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String(), bool play_sound = true) :
-        GUIWindow(x, y, width, height, button, hint),
+    OnButtonClick(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String(), bool play_sound = true) :
+        GUIWindow(x, y, width, height, pButton, hint),
         bPlaySound(play_sound)
     {}
     virtual ~OnButtonClick() {}
@@ -441,8 +440,8 @@ class OnButtonClick : public GUIWindow {
 
 class OnButtonClick2 : public GUIWindow {
  public:
-    OnButtonClick2(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String(), bool play_sound = true) :
-        GUIWindow(x, y, width, height, button, hint),
+    OnButtonClick2(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String(), bool play_sound = true) :
+        GUIWindow(x, y, width, height, pButton, hint),
         bPlaySound(play_sound)
     {}
     virtual ~OnButtonClick2() {}
@@ -454,8 +453,8 @@ class OnButtonClick2 : public GUIWindow {
 
 class OnButtonClick3 : public GUIWindow {
  public:
-    OnButtonClick3(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    OnButtonClick3(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~OnButtonClick3() {}
 
@@ -464,8 +463,8 @@ class OnButtonClick3 : public GUIWindow {
 
 class OnButtonClick4 : public GUIWindow {
  public:
-    OnButtonClick4(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    OnButtonClick4(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~OnButtonClick4() {}
 
@@ -474,8 +473,8 @@ class OnButtonClick4 : public GUIWindow {
 
 class OnSaveLoad : public GUIWindow {
  public:
-    OnSaveLoad(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    OnSaveLoad(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~OnSaveLoad() {}
 
@@ -484,7 +483,7 @@ class OnSaveLoad : public GUIWindow {
 
 class OnCancel : public GUIWindow {
  public:
-    OnCancel(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
+    OnCancel(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *button, const String &hint = String()) :
         GUIWindow(x, y, width, height, button, hint)
     {}
     virtual ~OnCancel() {}
@@ -494,8 +493,8 @@ class OnCancel : public GUIWindow {
 
 class OnCancel2 : public GUIWindow {
  public:
-    OnCancel2(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    OnCancel2(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~OnCancel2() {}
 
@@ -504,8 +503,8 @@ class OnCancel2 : public GUIWindow {
 
 class OnCancel3 : public GUIWindow {
  public:
-    OnCancel3(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    OnCancel3(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~OnCancel3() {}
 
@@ -514,7 +513,7 @@ class OnCancel3 : public GUIWindow {
 
 class OnCastTargetedSpell : public GUIWindow {
  public:
-    OnCastTargetedSpell(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String());
+    OnCastTargetedSpell(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String());
     virtual ~OnCastTargetedSpell() {}
 };
 

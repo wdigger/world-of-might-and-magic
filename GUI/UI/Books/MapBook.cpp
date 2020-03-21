@@ -27,14 +27,14 @@ void DrawBook_Map_sub(unsigned int tl_x, unsigned int tl_y, unsigned int br_x, i
 Image *ui_book_map_background = nullptr;
 
 GUIWindow_MapBook::GUIWindow_MapBook() : GUIWindow_Book() {
-    this->ptr_1C = (void *)WINDOW_MapsBook;  // inherited from GUIWindow::GUIWindow
+    this->buttonId = WINDOW_MapsBook;  // inherited from GUIWindow::GUIWindow
     BasicBookInitialization();
 
     pEventTimer->Pause();
     viewparams->sViewCenterX = pParty->vPosition.x;
     viewparams->sViewCenterY = pParty->vPosition.y;
     pAudioPlayer->StopChannels(-1, -1);
-    pBooksButtonOverlay = new GUIWindow_BooksButtonOverlay(546, 353, 0, 0, (int)pBtn_Maps);
+    pBooksButtonOverlay = new GUIWindow_BooksButtonOverlay(546, 353, 0, 0, pBtn_Maps);
 
     MapBookOpen = 1;
 

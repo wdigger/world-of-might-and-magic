@@ -19,8 +19,7 @@
 Image *ui_book_autonotes_background = nullptr;
 
 GUIWindow_AutonotesBook::GUIWindow_AutonotesBook() : GUIWindow_Book() {
-    this->ptr_1C =
-        (void *)WINDOW_AutonotesBook;  // inherited from GUIWindow::GUIWindow
+    this->buttonId = WINDOW_AutonotesBook;  // inherited from GUIWindow::GUIWindow
     BasicBookInitialization();
 
     // --------------------------------
@@ -28,7 +27,7 @@ GUIWindow_AutonotesBook::GUIWindow_AutonotesBook() : GUIWindow_Book() {
     pEventTimer->Pause();
     pAudioPlayer->StopChannels(-1, -1);
     pBooksButtonOverlay =
-        new GUIWindow_BooksButtonOverlay(527, 353, 0, 0, (int)pBtn_Autonotes);
+        new GUIWindow_BooksButtonOverlay(527, 353, 0, 0, pBtn_Autonotes);
     bFlashAutonotesBook = 0;
 
     // ----------------------------------------------
@@ -366,7 +365,7 @@ void GUIWindow_AutonotesBook::Update() {
     Autonotes_Misc_page_flag = 0;
     Autonotes_Instructors_page_flag = 0;
     num_achieved_awards = 0;
-    for (uint i = books_primary_item_per_page; i < full_num_items_in_book;
+    for (int i = books_primary_item_per_page; i < full_num_items_in_book;
          ++i) {
         ++num_achieved_awards;
         autonotes_window.DrawText(

@@ -463,10 +463,8 @@ Image *ui_character_inventory_paperdoll_rings_close = nullptr;
 
 std::array<Image *, 16> paperdoll_dbrds;
 
-GUIWindow_CharacterRecord::GUIWindow_CharacterRecord(
-    unsigned int uActiveCharacter, enum CURRENT_SCREEN screen)
-    : GUIWindow(0, 0, window->GetWidth(), window->GetHeight(),
-                uActiveCharacter) {
+GUIWindow_CharacterRecord::GUIWindow_CharacterRecord(unsigned int uActiveCharacter, enum CURRENT_SCREEN screen)
+    : GUIWindow(0, 0, window->GetWidth(), window->GetHeight(), uActiveCharacter) {
     pEventTimer->Pause();
     pAudioPlayer->StopChannels(-1, -1);
     bRingsShownInCharScreen = false;
@@ -593,7 +591,7 @@ void GUIWindow_CharacterRecord::ShowStatsTab() {
     ReleaseAwardsScrollBar();
     new OnButtonClick3(pCharacterScreen_StatsBtn->uX,
                        pCharacterScreen_StatsBtn->uY, 0, 0,
-                       (int)pCharacterScreen_StatsBtn);
+                       pCharacterScreen_StatsBtn);
 }
 
 void GUIWindow_CharacterRecord::ShowSkillsTab() {
@@ -603,7 +601,7 @@ void GUIWindow_CharacterRecord::ShowSkillsTab() {
     CharacterUI_SkillsTab_CreateButtons();
     new OnButtonClick3(pCharacterScreen_SkillsBtn->uX,
                        pCharacterScreen_SkillsBtn->uY, 0, 0,
-                       (int)pCharacterScreen_SkillsBtn);
+                       pCharacterScreen_SkillsBtn);
 }
 
 void GUIWindow_CharacterRecord::ShowInventoryTab() {
@@ -612,7 +610,7 @@ void GUIWindow_CharacterRecord::ShowInventoryTab() {
     CharacterUI_ReleaseButtons();
     new OnButtonClick3(pCharacterScreen_InventoryBtn->uX,
                        pCharacterScreen_InventoryBtn->uY, 0, 0,
-                       (int)pCharacterScreen_InventoryBtn);
+                       pCharacterScreen_InventoryBtn);
 }
 
 void GUIWindow_CharacterRecord::ShowAwardsTab() {
@@ -622,7 +620,7 @@ void GUIWindow_CharacterRecord::ShowAwardsTab() {
     current_character_screen_window = WINDOW_CharacterWindow_Awards;
     new OnButtonClick3(pCharacterScreen_AwardsBtn->uX,
                        pCharacterScreen_AwardsBtn->uY, 0, 0,
-                       (int)pCharacterScreen_AwardsBtn);
+                       pCharacterScreen_AwardsBtn);
     FillAwardsData();
 }
 
@@ -658,7 +656,7 @@ GUIWindow *CastSpellInfo::GetCastSpellInInventoryWindow() {
     CharacterUI_LoadPaperdollTextures();
     current_screen_type = CURRENT_SCREEN::SCREEN_CASTING;
     GUIWindow *CS_inventory_window = new GUIWindow_Inventory_CastSpell(
-        0, 0, window->GetWidth(), window->GetHeight(), (int)this, "");
+        0, 0, window->GetWidth(), window->GetHeight(), this, "");
     pCharacterScreen_ExitBtn = CS_inventory_window->CreateButton(
         394, 318, 75, 33, 1, 0, UIMSG_ClickExitCharacterWindowBtn, 0, 0,
         localization->GetString(79),  // Close
@@ -3321,8 +3319,7 @@ void OnPaperdollLeftClick() {
                  *((int *)pGUIWindow_CastTargetedSpell->ptr_1C + 3) = v36;
                  *((short *)pGUIWindow_CastTargetedSpell->ptr_1C + 3) =
                  *pEquipType;*/
-                pSpellInfo =
-                    (CastSpellInfo *)pGUIWindow_CastTargetedSpell->ptr_1C;
+                pSpellInfo = (CastSpellInfo *)pGUIWindow_CastTargetedSpell->ptr_1C;
                 pSpellInfo->uFlags &= 0x7F;
                 pSpellInfo->uPlayerID_2 = uActiveCharacter - 1;
                 pSpellInfo->spell_target_pid = v34 - 1;

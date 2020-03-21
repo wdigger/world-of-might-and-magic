@@ -21,8 +21,7 @@ Image *ui_book_lloyds_border = nullptr;
 std::array<Image *, 2> ui_book_lloyds_backgrounds;
 
 GUIWindow_LloydsBook::GUIWindow_LloydsBook() : GUIWindow_Book() {
-    this->ptr_1C =
-        (void *)WINDOW_LloydsBeacon;  // inherited from GUIWindow::GUIWindow
+    this->buttonId = WINDOW_LloydsBeacon;  // inherited from GUIWindow::GUIWindow
     BasicBookInitialization();
 
     _506360_installing_beacon = false;
@@ -101,7 +100,7 @@ void GUIWindow_LloydsBook::Update() {
     }
 
     if (uNumMaxBeacons > 0) {
-        for (size_t BeaconID = 0; BeaconID < uNumMaxBeacons; BeaconID++) {
+        for (size_t BeaconID = 0; BeaconID < (size_t)uNumMaxBeacons; BeaconID++) {
             if ((BeaconID >= pPlayer->vBeacons.size()) && bRecallingBeacon) {
                 break;
             }

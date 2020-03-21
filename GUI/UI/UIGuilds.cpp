@@ -42,7 +42,7 @@ void GuildDialog() {
     working_window.uFrameZ = 334;
 
     int base_teach_price =
-        (p2DEvents[(unsigned int)window_SpeakInHouse->ptr_1C - 1]
+        (p2DEvents[window_SpeakInHouse->buttonId - 1]
              .fPriceMultiplier *
          500.0);
     int pPrice = base_teach_price *
@@ -52,9 +52,7 @@ void GuildDialog() {
     if (dialog_menu_id == HOUSE_DIALOGUE_MAIN) {  // change to switch??
         if (!(uint16_t)_449B57_test_bit(
                 (uint8_t *)pPlayers[uActiveCharacter]->_achieved_awards_bits,
-                guild_mambership_flags[(unsigned int)
-                                           window_SpeakInHouse->ptr_1C -
-                                       139])) {  // you must me member
+                guild_mambership_flags[window_SpeakInHouse->buttonId - 139])) {  // you must me member
             pTextHeight = pFontArrus->CalcTextHeight(
                 pNPCTopics[121].pText, working_window.uFrameWidth, 0);
             working_window.DrawTitleText(
@@ -182,7 +180,7 @@ void GuildDialog() {
 
         for (pX = 32; pX < 452; pX += 70) {  //расположение в верхнем ряду
             if (pParty
-                    ->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139]
+                    ->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139]
                                         [itemxind]
                     .uItemID) {
                 render->DrawTextureAlphaNew(
@@ -190,7 +188,7 @@ void GuildDialog() {
                     shop_ui_items_in_store[itemxind]);  // top row
             }
             if (pParty
-                    ->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139]
+                    ->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139]
                                         [itemxind + 6]
                     .uItemID) {
                 render->DrawTextureAlphaNew(
@@ -205,7 +203,7 @@ void GuildDialog() {
             int itemcount = 0;
             for (uint i = 0; i < 12; ++i) {
                 if (pParty
-                        ->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139]
+                        ->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139]
                                             [i]
                         .uItemID > 0)
                     ++itemcount;
@@ -217,8 +215,7 @@ void GuildDialog() {
             if (!itemcount) {  // shop empty
                 working_window.DrawShops_next_generation_time_string(
                     pParty->PartyTimes
-                        .Shops_next_generation_time[window_SpeakInHouse->par1C -
-                                                    139] -
+                        .Shops_next_generation_time[window_SpeakInHouse->buttonId - 139] -
                     pParty->GetPlayingTime());
                 return;
             }
@@ -230,7 +227,7 @@ void GuildDialog() {
                     testx += 6;
                 }
 
-                ItemGen *item = &pParty->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139][testx];
+                ItemGen *item = &pParty->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139][testx];
 
                 if (item->uItemID) {
                     int testpos;
@@ -255,7 +252,7 @@ void GuildDialog() {
                                     [pPlayers[uActiveCharacter]
                                          ->SelectPhrasesTransaction(
                                              item, BuildingType_MagicShop,
-                                             (int)window_SpeakInHouse->ptr_1C,
+                                             window_SpeakInHouse->buttonId,
                                              2)],
                                 uActiveCharacter - 1, item,
                                 (char *)window_SpeakInHouse->ptr_1C, 2);
@@ -284,8 +281,7 @@ void GuildDialog() {
             if (pParty->uNumGold < pPrice) {
                 GameUI_StatusBar_OnEvent(localization->GetString(
                     155));  // "You don't have enough gold"
-                PlayHouseSound((unsigned int)window_SpeakInHouse->ptr_1C,
-                               HouseSound_NotEnoughMoney_TrainingSuccessful);
+                PlayHouseSound(window_SpeakInHouse->buttonId, HouseSound_NotEnoughMoney_TrainingSuccessful);
             } else {
                 Party::TakeGold(pPrice);
                 pPlayers[uActiveCharacter]->pActiveSkills[dialog_menu_id - 36] =
@@ -302,29 +298,21 @@ void SpellBookGenerator() {  // for GuildDialogs
     int randomnum;  // esi@7
 
     for (int i = 0; i < 12; ++i) {
-        if (p2DEvents[window_SpeakInHouse->par1C - 1].uType >= 5) {
-            if (p2DEvents[window_SpeakInHouse->par1C - 1].uType <= 13) {
-                pItemNum =
-                    rand() %
-                    word_4F0F30[(signed int)window_SpeakInHouse->par1C -
-                    139] +
-                    11 *
-                    p2DEvents[(unsigned int)window_SpeakInHouse->ptr_1C - 1]
-                    .uType +
-                    345;
+        if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType >= 5) {
+            if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType <= 13) {
+                pItemNum = rand() %
+                    word_4F0F30[(signed int)window_SpeakInHouse->buttonId - 139] + 11 *
+                    p2DEvents[(unsigned int)window_SpeakInHouse->buttonId - 1].uType + 345;
             } else {
-                if (p2DEvents[window_SpeakInHouse->par1C - 1].uType == 14)
+                if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType == 14)
                     randomnum = rand() % 4;
-                else if (p2DEvents[window_SpeakInHouse->par1C - 1].uType == 15)
+                else if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType == 15)
                     randomnum = rand() % 3 + 4;
-                else if (p2DEvents[window_SpeakInHouse->par1C - 1].uType == 16)
+                else if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType == 16)
                     randomnum = rand() % 2 + 7;
-                if (p2DEvents[window_SpeakInHouse->par1C - 1].uType <= 16)
+                if (p2DEvents[window_SpeakInHouse->buttonId - 1].uType <= 16)
                     pItemNum =
-                        rand() %
-                            word_4F0F30[(signed int)window_SpeakInHouse->par1C -
-                                        139] +
-                        11 * randomnum + 400;
+                        rand() % word_4F0F30[window_SpeakInHouse->buttonId - 139] + 11 * randomnum + 400;
             }
         }
 
@@ -334,11 +322,11 @@ void SpellBookGenerator() {  // for GuildDialogs
         }
 
         ItemGen *item_spellbook =
-            &pParty->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139][i];
+            &pParty->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139][i];
         item_spellbook->Reset();
-        pParty->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139][i]
+        pParty->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139][i]
             .uItemID = pItemNum;
-        pParty->SpellBooksInGuilds[window_SpeakInHouse->par1C - 139][i]
+        pParty->SpellBooksInGuilds[window_SpeakInHouse->buttonId - 139][i]
             .IsIdentified();
 
         shop_ui_items_in_store[i] = assets->GetImage_ColorKey(

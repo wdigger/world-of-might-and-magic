@@ -257,13 +257,13 @@ void Game_StartHirelingDialogue(unsigned int hireling_id) {
 
     pMessageQueue_50CBD0->Flush();
 
-    uint hireling_slot = 0;
+    unsigned int hireling_slot = 0;
     char buf[1024];
-    for (uint i = 0; i < 2; ++i) {
+    for (unsigned int i = 0; i < 2; ++i) {
         if (pParty->pHirelings[i].pName) buf[hireling_slot++] = i;
     }
 
-    for (uint i = 0; i < pNPCStats->uNumNewNPCs; ++i) {
+    for (unsigned int i = 0; i < pNPCStats->uNumNewNPCs; ++i) {
         NPCData *npc = &pNPCStats->pNewNPCData[i];
         if (npc->Hired() &&
             (!pParty->pHirelings[0].pName ||
@@ -482,7 +482,7 @@ void Game::EventLoop() {
                                      // WINDOW_8, 0, 0);
                     continue;
                 case UIMSG_Cancel:
-                    new OnCancel(350, 302, 106, 42, (int)pBtnCancel);
+                    new OnCancel(350, 302, 106, 42, pBtnCancel);
                     continue;
                 case UIMSG_OpenQuestBook:
                     pMessageQueue_50CBD0->Flush();
@@ -563,7 +563,7 @@ void Game::EventLoop() {
                         if (!pGUIWindow_CastTargetedSpell) {  // Draw Menu
                             dword_6BE138 = -1;
                             new OnButtonClick2(0x25Au, 0x1C2u, 0, 0,
-                                               (int)pBtn_GameSettings, String(),
+                                               pBtn_GameSettings, String(),
                                                false);
 
                             pMessageQueue_50CBD0->Flush();
@@ -893,7 +893,7 @@ void Game::EventLoop() {
                 case UIMSG_ScrollNPCPanel:  // Right and Left button for
                                             // NPCPanel
                     if (uMessageParam) {
-                        new OnButtonClick2(626, 179, 0, 0, (int)pBtn_NPCRight);
+                        new OnButtonClick2(626, 179, 0, 0, pBtn_NPCRight);
                         v37 = (pParty->pHirelings[0].pName != 0) +
                               (pParty->pHirelings[1].pName != 0) +
                               (unsigned __int8)pParty->cNonHireFollowers - 2;
@@ -1662,7 +1662,7 @@ void Game::EventLoop() {
                 case UIMSG_ExitRest:
                     new OnCancel(pButton_RestUI_Exit->uX,
                                  pButton_RestUI_Exit->uY, 0, 0,
-                                 (int)pButton_RestUI_Exit,
+                                 pButton_RestUI_Exit,
                                  localization->GetString(81));  // "Exit Rest"
                     continue;
                 case UIMSG_Wait5Minutes:
@@ -1675,7 +1675,7 @@ void Game::EventLoop() {
                     new OnButtonClick2(
                         pButton_RestUI_Wait5Minutes->uX,
                         pButton_RestUI_Wait5Minutes->uY, 0, 0,
-                        (int)pButton_RestUI_Wait5Minutes,
+                        pButton_RestUI_Wait5Minutes,
                         localization->GetString(238));  // "Wait 5 Minutes"
                     _506F14_resting_stage = 1;
                     _506F18_num_minutes_to_sleep = 5;
@@ -1690,7 +1690,7 @@ void Game::EventLoop() {
                     new OnButtonClick2(
                         pButton_RestUI_Wait1Hour->uX,
                         pButton_RestUI_Wait1Hour->uY, 0, 0,
-                        (int)pButton_RestUI_Wait1Hour,
+                        pButton_RestUI_Wait1Hour,
                         localization->GetString(239));  // "Wait 1 Hour"
                     _506F14_resting_stage = 1;
                     _506F18_num_minutes_to_sleep = 60;
@@ -1837,7 +1837,7 @@ void Game::EventLoop() {
                     new OnButtonClick2(
                         pButton_RestUI_WaitUntilDawn->uX,
                         pButton_RestUI_WaitUntilDawn->uY, 0, 0,
-                        (int)pButton_RestUI_WaitUntilDawn,
+                        pButton_RestUI_WaitUntilDawn,
                         localization->GetString(237));  // "Wait until Dawn"
                     v97 = _494820_training_time(pParty->uCurrentHour);
                     _506F14_resting_stage = 1;
@@ -1900,7 +1900,7 @@ void Game::EventLoop() {
                 case UIMSG_ClickInstallRemoveQuickSpellBtn: {
                     new OnButtonClick2(pBtn_InstallRemoveSpell->uX,
                                        pBtn_InstallRemoveSpell->uY, 0, 0,
-                                       (int)pBtn_InstallRemoveSpell);
+                                       pBtn_InstallRemoveSpell);
                     if (!uActiveCharacter) continue;
                     pPlayer10 = pPlayers[uActiveCharacter];
                     if (!byte_506550 || !quick_spell_at_page) {
@@ -2035,8 +2035,7 @@ void Game::EventLoop() {
                     if (current_screen_type != CURRENT_SCREEN::SCREEN_GAME)
                         pGUIWindow_CurrentMenu->Release();
 
-                    new OnButtonClick2(0x230u, 0x1C2u, 0, 0,
-                                       (int)pBtn_QuickReference);
+                    new OnButtonClick2(0x230u, 0x1C2u, 0, 0, pBtn_QuickReference);
                     viewparams->bRedrawGameUI = true;
 
                     pGUIWindow_CurrentMenu = new GUIWindow_QuickReference();
@@ -2057,8 +2056,7 @@ void Game::EventLoop() {
                     gamma_preview_image =
                         assets->GetImage_PCXFromFile("gamma.pcx");
 
-                    new OnButtonClick(0x25Au, 0x1C2u, 0, 0,
-                                      (int)pBtn_GameSettings);
+                    new OnButtonClick(0x25Au, 0x1C2u, 0, 0, pBtn_GameSettings);
                     // LABEL_453:
                     /*if ( (signed int)pMessageQueue_50CBD0->uNumMessages >= 40
                     ) continue;
@@ -2079,13 +2077,11 @@ void Game::EventLoop() {
                     continue;
                 }
                 case UIMSG_ClickAwardsUpBtn:
-                    new OnButtonClick3(pBtn_Up->uX, pBtn_Up->uY, 0, 0,
-                                       (int)pBtn_Up);
+                    new OnButtonClick3(pBtn_Up->uX, pBtn_Up->uY, 0, 0, pBtn_Up);
                     BtnUp_flag = 1;
                     continue;
                 case UIMSG_ClickAwardsDownBtn:
-                    new OnButtonClick3(pBtn_Down->uX, pBtn_Down->uY, 0, 0,
-                                       (int)pBtn_Down);
+                    new OnButtonClick3(pBtn_Down->uX, pBtn_Down->uY, 0, 0, pBtn_Down);
                     BtnDown_flag = 1;
                     continue;
                 case UIMSG_ChangeDetaliz:
@@ -2137,7 +2133,7 @@ void Game::EventLoop() {
                 case UIMSG_ClickExitCharacterWindowBtn:
                     new OnCancel2(pCharacterScreen_ExitBtn->uX,
                                   pCharacterScreen_ExitBtn->uY, 0, 0,
-                                  (int)pCharacterScreen_ExitBtn);
+                                  pCharacterScreen_ExitBtn);
                     continue;
                 case UIMSG_ClickBooksBtn:
                     switch (uMessageParam) {
@@ -2190,7 +2186,7 @@ void Game::EventLoop() {
                             continue;
                     }
                     new OnButtonClick(pButton->uX, pButton->uY, 0, 0,
-                                      (int)pButton, String(), false);
+                                      pButton, String(), false);
                     continue;
                 case UIMSG_SelectCharacter:
                     pMessageQueue_50CBD0->Flush();

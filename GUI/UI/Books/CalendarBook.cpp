@@ -23,8 +23,7 @@ Image *ui_book_calendar_moon_2_2 = nullptr;
 Image *ui_book_calendar_moon_full = nullptr;
 
 GUIWindow_CalendarBook::GUIWindow_CalendarBook() : GUIWindow_Book() {
-    this->ptr_1C =
-        (void *)WINDOW_CalendarBook;  // inherited from GUIWindow::GUIWindow
+    this->buttonId = WINDOW_CalendarBook;  // inherited from GUIWindow::GUIWindow
     BasicBookInitialization();
 
     // --------------------------------
@@ -32,7 +31,7 @@ GUIWindow_CalendarBook::GUIWindow_CalendarBook() : GUIWindow_Book() {
     pEventTimer->Pause();
     pAudioPlayer->StopChannels(-1, -1);
     pBooksButtonOverlay =
-        new GUIWindow_BooksButtonOverlay(570, 354, 0, 0, (int)pBtn_Calendar);
+        new GUIWindow_BooksButtonOverlay(570, 354, 0, 0, pBtn_Calendar);
 
     // ----------------------------------------------
     // 00411BFC GUIWindow::InitializeBookView -- part

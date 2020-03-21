@@ -12,8 +12,8 @@ class GUIWindow_Rest : public GUIWindow {
 
 class GUIWindow_RestWindow : public GUIWindow {
  public:
-    GUIWindow_RestWindow(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const char *hint) :
-        GUIWindow(x, y, width, height, button, hint)
+    GUIWindow_RestWindow(unsigned int x, unsigned int y, unsigned int width, unsigned int height, void *pButton, const char *hint) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~GUIWindow_RestWindow() {}
 

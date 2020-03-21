@@ -125,15 +125,15 @@ void GameUI_InitializeDialogue(Actor *actor, int bPlayerSaysHello) {
 
 GUIWindow_Dialogue::GUIWindow_Dialogue(unsigned int x, unsigned int y,
                                        unsigned int width, unsigned int height,
-                                       int button, const String &hint)
-    : GUIWindow(x, y, width, height, button, hint) {
+                                       int iButtonId, const String &hint)
+    : GUIWindow(x, y, width, height, iButtonId, hint) {
     prev_screen_type = current_screen_type;
     current_screen_type = CURRENT_SCREEN::SCREEN_NPC_DIALOGUE;
     pBtn_ExitCancel =
         CreateButton(0x1D7u, 0x1BDu, 0xA9u, 0x23u, 1, 0, UIMSG_Escape, 0, 0,
                      localization->GetString(79),  // "Exit"
                      {{ui_exit_cancel_button_background}});
-    if (par1C != 1) {
+    if (buttonId != 1) {
         int num_menu_buttons = 0;
         int v11 = pFontArrus->GetHeight() - 3;
         NPCData *speakingNPC = GetNPCData(sDialogue_SpeakingActorNPC_ID);
@@ -534,11 +534,20 @@ void GUIWindow_Dialogue::Update() {
 
 GUIWindow_GenericDialogue::GUIWindow_GenericDialogue(
     unsigned int x, unsigned int y, unsigned int width, unsigned int height,
-    int button, const String &hint)
-    : GUIWindow(x, y, width, height, button, hint) {
+    GUIButton *pButton, const String &hint)
+    : GUIWindow(x, y, width, height, pButton, hint) {
     prev_screen_type = current_screen_type;
     pKeyActionMap->EnterText(0, 15, this);
     current_screen_type = CURRENT_SCREEN::SCREEN_BRANCHLESS_NPC_DIALOG;
+}
+
+GUIWindow_GenericDialogue::GUIWindow_GenericDialogue(
+	unsigned int x, unsigned int y, unsigned int width, unsigned int height,
+	int iButtonId, const String& hint)
+	: GUIWindow(x, y, width, height, iButtonId, hint) {
+	prev_screen_type = current_screen_type;
+	pKeyActionMap->EnterText(0, 15, this);
+	current_screen_type = SCREEN_BRANCHLESS_NPC_DIALOG;
 }
 
 void GUIWindow_GenericDialogue::Release() {
@@ -595,7 +604,7 @@ void GUIWindow_GenericDialogue::Update() {
         sub_4452BB();
         return;
     }
-    if (pGUIWindow2->ptr_1C == (void *)26) {
+    if (pGUIWindow2->buttonId == 26) {
         auto str = StringPrintf("%s %s", GameUI_StatusBar_GetInput().c_str(),
                                 pKeyActionMap->pPressedKeysBuffer);
         pGUIWindow2->DrawText(pFontLucida, 13, 357, 0, str, 0, 0, 0);

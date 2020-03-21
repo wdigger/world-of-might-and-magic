@@ -18,8 +18,8 @@ class GUIWindow_Book : public GUIWindow {
 
 class GUIWindow_BooksButtonOverlay : public GUIWindow {
  public:
-    GUIWindow_BooksButtonOverlay(unsigned int x, unsigned int y, unsigned int width, unsigned int height, int button, const String &hint = String()) :
-        GUIWindow(x, y, width, height, button, hint)
+    GUIWindow_BooksButtonOverlay(unsigned int x, unsigned int y, unsigned int width, unsigned int height, GUIButton *pButton, const String &hint = String()) :
+        GUIWindow(x, y, width, height, pButton, hint)
     {}
     virtual ~GUIWindow_BooksButtonOverlay() {}
 
