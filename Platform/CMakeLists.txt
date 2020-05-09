@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+
+find_package(SDL2 REQUIRED)
 
 set(PLATFORM_SOURCES OSWindow.cpp
                      OSWindowFactory.cpp
@@ -26,4 +28,4 @@ endif()
 add_library(platform STATIC ${PLATFORM_SOURCES} ${PLATFORM_HEADERS})
 target_check_style(platform)
 
-target_link_libraries(platform sdl2)
+target_link_libraries(platform ${SDL2_LIBRARY})

@@ -9,6 +9,10 @@
 #include <vector>
 
 #include "Engine/Point.h"
+#include <dirent.h>
+#include <fnmatch.h>
+#include <sys/time.h>
+#include <glob.h>
 
 void OS_MsgBox(const char *msg, const char *title) {
     // MessageBoxA(nullptr, msg, title, 0);
@@ -156,4 +160,21 @@ FILE *fcaseopen(char const *path, char const *mode) {
 
 std::string OS_GetDirSeparator() {
     return "/";
+}
+
+std::string CreatePathByExpandingTildePath(const std::string &path) {
+    std::string result;
+
+    glob_t globbuf = {0};
+    if (glob(path.c_str(), GLOB_TILDE, NULL, &globbuf) == 0) {
+        char **v = globbuf.gl_pathv;
+        result = v[0];
+        globfree(&globbuf);
+    }
+
+    return result;
+}
+
+std::string OS_FindMm7Directory() {
+    return CreatePathByExpandingTildePath("~/Library/Application Support/WoMM");
 }

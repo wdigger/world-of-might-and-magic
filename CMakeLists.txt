@@ -1,8 +1,10 @@
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+endif()
+
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project("World of Might and Magic")
 set(PROJECT_VERSION "0.2.0")
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/Bootstrapper.cmake)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules)
 
@@ -64,8 +66,14 @@ include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_C
 
 add_definitions(-DPACKAGE_BUGREPORT="https://github.com/gp-alex/world-of-might-and-magic/issues")
 
+find_package(SDL2 REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(OpenGL REQUIRED)
+
 include(CppLint)
 enable_check_style()
+
+include_directories(${INCLUDE_DERICTORIES} ${SDL2_INCLUDE_DIR})
 
 add_subdirectory(Arcomage)
 add_subdirectory(Engine)
@@ -84,37 +92,20 @@ target_compile_features (World_of_Might_and_Magic
 )
 target_check_style(World_of_Might_and_Magic)
 
-target_link_libraries(World_of_Might_and_Magic zlib sdl2 ffmpeg)
+target_link_libraries(World_of_Might_and_Magic ${ZLIB_LIBRARY_RELEASE} ${SDL2_LIBRARY})
 if(WIN32)
 target_link_libraries(World_of_Might_and_Magic ddraw.lib dxguid.lib)
 else()
 message(STATUS "ZLIB_LIBRARIES = ${ZLIB_LIBRARIES}")
-message(STATUS "SDL_LIBRARIES = ${SDL_LIBRARIES}")
+message(STATUS "SDL_LIBRARIES = ${SDL2_LIBRARY}")
 message(STATUS "FFMPEG_LIBRARIES = ${FFMPEG_LIBRARIES}")
-message(STATUS "OPENGL_opengl_LIBRARY = ${OPENGL_opengl_LIBRARY}")
+message(STATUS "OPENGL_gl_LIBRARY = ${OPENGL_gl_LIBRARY}")
 message(STATUS "OPENGL_glu_LIBRARY = ${OPENGL_glu_LIBRARY}")
-
-target_link_libraries(World_of_Might_and_Magic ${OPENGL_opengl_LIBRARY} ${OPENGL_glu_LIBRARY})
-
-# For OSX 10.14 and below
-if (APPLE)
-  find_library(COCOA_LIBRARY Cocoa)
-  find_library(CARBON_LIBRARY Carbon)
-  find_library(COREAUDIO_LIBRARY CoreAudio)
-  find_library(COREVIDEO_LIBRARY CoreVideo)
-  find_library(IOKIT_LIBRARY IOKit)
-  find_library(FORCEFEEDBACK_LIBRARY ForceFeedback)
-  find_library(ICONV_LIBRARY iconv)
-  find_library(AUDIOTOOLBOX_LIBRARY AudioToolbox)
-  target_link_libraries(World_of_Might_and_Magic ${COCOA_LIBRARY} ${CARBON_LIBRARY} ${COREAUDIO_LIBRARY} ${COREVIDEO_LIBRARY} ${IOKIT_LIBRARY} ${FORCEFEEDBACK_LIBRARY} ${ICONV_LIBRARY} ${AUDIOTOOLBOX_LIBRARY})
-  target_link_libraries(World_of_Might_and_Magic ${AVUTIL_LIBRARY} ${SWRESAMPLE_LIBRARY})
+target_link_libraries(World_of_Might_and_Magic ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})
 endif()
 
-endif()
 target_link_libraries(World_of_Might_and_Magic game arcomage engine gui io media platform objects spells tables graphics turnengine serialization)
 
 set_property(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT World_of_Might_and_Magic
 )
-
-RESOLVE_DEPENDENCIES(World_of_Might_and_Magic)

@@ -29,3 +29,5 @@ std::vector<std::string> OS_FindFiles(const std::string &folder, const std::stri
 FILE* fcaseopen(char const* path, char const* mode);
 
 std::string OS_GetDirSeparator(void);
+
+std::string OS_FindMm7Directory();

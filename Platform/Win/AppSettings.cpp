@@ -1,5 +1,11 @@
 #include "Platform/Win/Win.h"
 
+#ifdef _WIN64
+# define ADDITIONAL_REG_KEY 0
+#else
+# define ADDITIONAL_REG_KEY KEY_WOW64_32KEY
+#endif  // _WIN64
+
 bool OS_GetAppStringRecursive(HKEY parent_key, const char *path,
                               char *out_string, int out_string_size) {
     char current_key[128];
@@ -40,7 +46,7 @@ bool OS_GetAppStringRecursive(HKEY parent_key, const char *path,
         bool result = false;
         HKEY key;
         if (!RegOpenKeyExA(parent_key, current_key, 0,
-                           KEY_READ | KEY_WOW64_32KEY, &key)) {
+                           KEY_READ | ADDITIONAL_REG_KEY, &key)) {
             /*int idx = 0, r;
             do {
             char value_name[1024];
@@ -89,7 +95,7 @@ int OS_GetAppInt(const char *pKey, int uDefValue) {
     *(int *)Data = uDefValue;
 
     if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE", 0,
-                       KEY_READ | KEY_WOW64_32KEY, &hKey)) {  // for 64 bit
+                       KEY_READ | ADDITIONAL_REG_KEY, &hKey)) {  // for 64 bit
         if (!RegCreateKeyExA(hKey, "New World Computing", 0, "", 0,
                              KEY_ALL_ACCESS, 0, &phkResult, &dwDisposition)) {
             if (!RegCreateKeyExA(phkResult, "Might and Magic VII", 0, "", 0,
@@ -132,7 +138,7 @@ void OS_SetAppString(const char *pKey, const char *pString) {
     hKey = 0;
     phkResult = 0;
     if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE", 0,
-                       KEY_READ | KEY_WOW64_32KEY, &hKey)) {
+                       KEY_READ | ADDITIONAL_REG_KEY, &hKey)) {
         if (!RegCreateKeyExA(hKey, "New World Computing", 0, "", 0,
                              KEY_ALL_ACCESS, 0, &phkResult, &dwDisposition)) {
             if (!RegCreateKeyExA(phkResult, "Might and Magic VII", 0, "", 0,
@@ -176,7 +182,7 @@ void OS_GetAppString(const char *pKeyName, char *pOutString, int uBufLen,
     phkResult = 0;
     result = (LSTATUS)strncpy((char *)Dest, pDefaultValue, uBufLen);
     if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE", 0,
-                       KEY_READ | KEY_WOW64_32KEY, &hKey)) {
+                       KEY_READ | ADDITIONAL_REG_KEY, &hKey)) {
         if (!RegCreateKeyExA(hKey, "New World Computing", 0, "", 0,
                              KEY_ALL_ACCESS, 0, &phkResult, &dwDisposition)) {
             if (!RegCreateKeyExA(phkResult, "Might and Magic VII", 0, "", 0,
@@ -217,7 +223,7 @@ void OS_SetAppInt(const char *pKey, int val) {
     hKey = 0;
     phkResult = 0;
     if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE", 0,
-                       KEY_READ | KEY_WOW64_32KEY, &hKey)) {
+                       KEY_READ | ADDITIONAL_REG_KEY, &hKey)) {
         if (!RegCreateKeyExA(hKey, "New World Computing", 0, "", 0,
                              KEY_ALL_ACCESS, 0, &phkResult, &dwDisposition)) {
             if (!RegCreateKeyExA(phkResult, "Might and Magic VII", 0, "", 0,

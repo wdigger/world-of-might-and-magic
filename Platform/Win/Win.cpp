@@ -64,3 +64,31 @@ FILE *fcaseopen(char const *path, char const *mode) {
 std::string OS_GetDirSeparator() {
     return "/";
 }
+
+std::string OS_FindMm7Directory() {
+    // env variable override to a custom folder
+    if (const char *path = std::getenv("WOMM_PATH_OVERRIDE")) {
+        return path;
+    }
+
+    // standard 1.0 installation
+    char path[2048];
+    if (OS_GetAppString("HKEY_LOCAL_MACHINE/SOFTWARE/New World Computing/Might and Magic VII/1.0/AppPath",
+                        path, sizeof(path))) {
+        return path;
+    }
+
+    // GoG old version
+    if (OS_GetAppString("HKEY_LOCAL_MACHINE/SOFTWARE/GOG.com/GOGMM7/PATH", path, sizeof(path))) {
+        return path;
+    }
+
+    // GoG new version ( 2018 builds )
+    if (OS_GetAppString("HKEY_LOCAL_MACHINE/SOFTWARE/WOW6432Node/GOG.com/Games/1207658916/Path",
+                        path, sizeof(path))) {
+        return path;
+    }
+
+    // Hack path fix - if everything else fails, set your path here.
+    return "E:\\Programs\\GOG Galaxy\\Games\\Might and Magic 7";
+}

@@ -142,8 +142,9 @@ uint32_t Color32(uint32_t r, uint32_t g, uint32_t b, uint32_t a) {
 }
 
 uint16_t Color16(uint32_t r, uint32_t g, uint32_t b) {
-    return (b >> (8 - 5)) | 0x7E0 & (g << (6 + 5 - 8)) |
-        0xF800 & (r << (6 + 5 + 5 - 8));
+    return (b >> (8 - 5)) |
+           (0x7E0 & (g << (6 + 5 - 8))) |
+           (0xF800 & (r << (6 + 5 + 5 - 8)));
 }
 
 bool FileExists(const char *fname) {
@@ -474,15 +475,25 @@ void Engine::Deinitialize() {
         OS_SetAppInt("window Y", window->GetY());
     }
     OS_SetAppInt("valAlwaysRun", config->always_run ? 1 : 0);
-    pItemsTable->Release();
-    pNPCStats->Release();
+    if (pItemsTable != nullptr) {
+        pItemsTable->Release();
+        pItemsTable = nullptr;
+    }
+    if (pNPCStats != nullptr) {
+        pNPCStats->Release();
+        pNPCStats = nullptr;
+    }
 
-    if (mouse)
+    if (mouse) {
         mouse->Deactivate();
+    }
 
     render = nullptr;
 
-    pNew_LOD->FreeSubIndexAndIO();
+    if (pNew_LOD != nullptr) {
+        pNew_LOD->FreeSubIndexAndIO();
+        pNew_LOD = nullptr;
+    }
 
     delete pEventTimer;
 }
@@ -1276,11 +1287,12 @@ void Engine::_461103_load_level_sub() {
         //{
         // v3 = pActors[i].pMonsterInfo.uID;
         v17 = 0;
-        if (pActors[i].pMonsterInfo.uID >= 115 &&
-                pActors[i].pMonsterInfo.uID <= 186 ||
-            pActors[i].pMonsterInfo.uID >= 232 &&
-                pActors[i].pMonsterInfo.uID <= 249)
+        if ((pActors[i].pMonsterInfo.uID >= 115 &&
+                pActors[i].pMonsterInfo.uID <= 186) ||
+            (pActors[i].pMonsterInfo.uID >= 232 &&
+             pActors[i].pMonsterInfo.uID <= 249)) {
             v17 = 1;
+        }
         // v1 = 0;
         v4 = (pActors[i].pMonsterInfo.uID - 1) % 3;
         if (2 == v4) {
@@ -1388,8 +1400,8 @@ unsigned int GetGravityStrength() {
 //----- (00448B45) --------------------------------------------------------
 void GameUI_StatusBar_Update(bool force_hide) {
     if (force_hide ||
-        game_ui_status_bar_event_string_time_left &&
-            OS_GetTime() >= game_ui_status_bar_event_string_time_left && !pEventTimer->bPaused) {
+        (game_ui_status_bar_event_string_time_left &&
+            OS_GetTime() >= game_ui_status_bar_event_string_time_left && !pEventTimer->bPaused)) {
         game_ui_status_bar_event_string_time_left = 0;
     }
 }
@@ -2264,16 +2276,16 @@ void OnMapLoad() {
                 else
                     v18 = GameTime(0);
 
-                if (v18.GetYears() != 0 &&
+                if ((v18.GetYears() != 0 &&
                         MapsLongTimersList[MapsLongTimers_count]
-                            .YearsInterval ||
-                    v18.GetMonths() != 0 &&
+                            .YearsInterval) ||
+                    (v18.GetMonths() != 0 &&
                         MapsLongTimersList[MapsLongTimers_count]
-                                .MonthsInterval != 0 ||
-                    v18.GetWeeks() != 0 &&
+                                .MonthsInterval != 0) ||
+                    (v18.GetWeeks() != 0 &&
                         MapsLongTimersList[MapsLongTimers_count]
-                                .WeeksInterval != 0 ||
-                    v18.GetDays() != 0 || !v20) {
+                                .WeeksInterval != 0) ||
+                    (v18.GetDays() != 0) || !v20) {
                     ++MapsLongTimers_count;
                     MapsLongTimersList[MapsLongTimers_count].NextStartTime = GameTime(0);
                     continue;

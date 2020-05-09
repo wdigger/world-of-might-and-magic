@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+
+find_package(ZLIB REQUIRED)
 
 set(ENGINE_SOURCES AssetsManager.cpp
                    CommandLine.cpp
@@ -72,7 +74,7 @@ endif()
 add_library(engine STATIC ${ENGINE_SOURCES} ${ENGINE_HEADERS})
 target_check_style(engine)
 
-target_link_libraries(engine zlib)
+target_link_libraries(engine ${ZLIB_LIBRARIES})
 target_link_libraries(engine game)
 
 add_subdirectory(Graphics)

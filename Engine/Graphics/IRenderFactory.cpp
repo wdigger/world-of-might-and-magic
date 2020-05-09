@@ -23,34 +23,15 @@ std::shared_ptr<IRender> IRenderFactory::Create(
     IRenderConfigFactory renderConfigFactory;
     auto config = renderConfigFactory.Create(renderer_name, is_fullscreen);
 
-    std::shared_ptr<IRender> renderer;
-    switch (config->renderer_type) {
-#ifdef _WINDOWS
-        case RendererType::DirectDraw:
-            renderer = std::make_shared<Render>(
-                window,
-                EngineIoc::ResolveDecalBuilder(),
-                EngineIoc::ResolveLightmapBuilder(),
-                EngineIoc::ResolveSpellFxRenderer(),
-                EngineIoc::ResolveParticleEngine(),
-                EngineIoc::ResolveVis(),
-                EngineIoc::ResolveLogger()
-            );
-            break;
-#endif
-
-        case RendererType::OpenGl:
-            renderer = std::make_shared<RenderOpenGL>(
-                window,
-                EngineIoc::ResolveDecalBuilder(),
-                EngineIoc::ResolveLightmapBuilder(),
-                EngineIoc::ResolveSpellFxRenderer(),
-                EngineIoc::ResolveParticleEngine(),
-                EngineIoc::ResolveVis(),
-                EngineIoc::ResolveLogger()
-            );
-            break;
-    }
+    std::shared_ptr<IRender> renderer = std::make_shared<RenderOpenGL>(
+        window,
+        EngineIoc::ResolveDecalBuilder(),
+        EngineIoc::ResolveLightmapBuilder(),
+        EngineIoc::ResolveSpellFxRenderer(),
+        EngineIoc::ResolveParticleEngine(),
+        EngineIoc::ResolveVis(),
+        EngineIoc::ResolveLogger()
+    );
 
     if (renderer) {
         if (renderer->Configure(config)) {
